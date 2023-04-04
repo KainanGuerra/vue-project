@@ -1,4 +1,3 @@
-# glaucia-vue
 
 ## Project setup
 ```
