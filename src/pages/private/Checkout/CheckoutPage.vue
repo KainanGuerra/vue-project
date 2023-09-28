@@ -1,5 +1,5 @@
 <template>
-    <h1>ACESSÓRIOS</h1>
+    <h1>Checkout Page</h1>
 </template>
 <script setup lang="ts">
 </script>

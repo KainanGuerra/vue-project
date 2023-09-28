@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import MainHeader from './components/header/MainHeader.vue';
 </script>
 
 <template>
-  <div class="body">
-
-    <MainHeader />
-    <router-view></router-view>
-  </div>
+  <router-view />
 </template>
 
 <style scoped>

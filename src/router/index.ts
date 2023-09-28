@@ -1,7 +1,7 @@
+import HomePageVue from '@/pages/public/home/HomePage.vue'
+import LoginPageVue from '@/pages/public/login/LoginPage.vue'
+import RegisterPageVue from '@/pages/public/register/RegisterPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import MainView from '@/views/MainView.vue'
-import AdminViewVue from '@/views/AdminView.vue'
-import LoginVIewVue from '@/views/LoginVIew.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,34 +9,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: MainView,
+      component: HomePageVue,
       children: [
-        {
-          path: '/sneakers',
-          component: () => import('@/components/header/SneakersHeader.vue'),
-          name: 'sneakers',
-        },
-        {
-          path: '/headgears',
-          component: () => import('@/components/header/HeadgearsHeader.vue'),
-          name: 'headgears',
-        },
-        {
-          path: '/acessorios',
-          component: () => import('@/components/header/AcessoriosHeader.vue'),
-          name: 'acessorios',
-        },
       ]
     },
     {
       path: '/login',
       name: 'login', 
-      component: LoginVIewVue
+      component: LoginPageVue
     },
     {
-      path: '/admin',
-      name: 'admin',
-      component: AdminViewVue,
+      path: '/register',
+      name: 'register',
+      component: RegisterPageVue,
     }
   ]
 })
