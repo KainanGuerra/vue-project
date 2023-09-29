@@ -1,5 +1,4 @@
 <template>
-    <h1>Profile Page</h1>
+  <h1>Profile Page</h1>
 </template>
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

@@ -1,11 +1,10 @@
-
 import { createApp } from 'vue'
 
 import App from '@/App.vue'
-import { setupPlugins } from './plugins';
+import { setupPlugins } from './plugins'
 
-const app = createApp(App);
+const app = createApp(App)
 
-setupPlugins(app);
+setupPlugins(app)
 
 app.mount('#app')

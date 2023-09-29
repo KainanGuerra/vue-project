@@ -1,5 +1,4 @@
 <template>
-    <h1>Product Page</h1>
+  <h1>Product Page</h1>
 </template>
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

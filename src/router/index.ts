@@ -11,23 +11,27 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomePageVue,
-      children: [
-      ]
+      children: []
     },
     {
       path: '/login',
-      name: 'login', 
+      name: 'login',
       component: LoginPageVue
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterPageVue,
+      component: RegisterPageVue
     },
     {
       path: '/product',
       name: 'product',
-      component: ProductPageVue,
+      component: ProductPageVue
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: ProductPageVue
     }
   ]
 })
