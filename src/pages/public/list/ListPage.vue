@@ -1,4 +1,5 @@
 <template>
-  <h1>Summary Page</h1>
+  <h1>List Page</h1>
 </template>
+
 <script setup lang="ts"></script>
