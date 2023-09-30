@@ -2,6 +2,7 @@
   "name": "front-end-v1",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -13,9 +14,12 @@
   },
   "dependencies": {
     "axios": "^1.5.1",
+    "bundle-require": "^4.0.2",
     "cors": "^2.8.5",
+    "esbuild": "^0.19.4",
     "pinia": "^2.1.6",
     "quasar": "^2.12.7",
+    "typeface-poppins": "^1.1.13",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
