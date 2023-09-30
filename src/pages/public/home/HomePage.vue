@@ -9,4 +9,6 @@ import HomeHeader from './components/HomeHeader.vue'
 const state = reactive({
   outro: ''
 })
+
+
 </script>
