@@ -1,14 +1,35 @@
-import type { MakeRequest } from "@/shared/utils/services/axios-instance";
+import { AxiosInstance } from '@/shared/utils/services/axios-instance';
 
-export class UserService {
-    private readonly makeRequest: MakeRequest;
+import { type TUserSignInPayload } from '@/stores/user.store';
+import { type TCreateUserBodyRequest } from '@/shared/types/user/create-user-body.type';
+import axios from 'axios';
+import type { IReturnUserTokenMapped } from '@/shared/interface/return-user-validate-token.interface';
 
-    async login(token: string){
-        const route = 'auth' 
-        const request = {
-            route,
-            token,
+export const UserService = {
+    async singin({email, password}: TUserSignInPayload){
+        const payload = {
+            email,
+            password,
+        } 
+        const response = await AxiosInstance.post('/auth', payload)
+        return response.data;
+    },
+    async validate(token: any){
+        const payload = { 
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }        
         }
-        return await this.makeRequest.WithToken(request)
+        return await AxiosInstance.get('/users/token', payload)
+    },
+    async register({name, email, password, document}: TCreateUserBodyRequest){
+        const payload = {
+            name,
+            email,
+            password,
+            document,
+        }
+        const response = await axios.post('users', payload)
+        return response.data
     }
-}
+};

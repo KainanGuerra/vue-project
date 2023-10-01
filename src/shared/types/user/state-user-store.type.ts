@@ -1,6 +1,6 @@
-import { IUsersEntity } from "@/shared/interface/user-entity.interface";
+import type { IUsersEntity } from '@/shared/interface/user-entity.interface';
 
 export type TUserStore = {
-    token: string;
-    user: IUsersEntity;
+    token: string | null;
+    user: IUsersEntity | null;
 }

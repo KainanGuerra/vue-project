@@ -10,6 +10,11 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  build: {
+    rollupOptions: {
+      input: 'src/main.ts', // Seu arquivo principal TypeScript
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
