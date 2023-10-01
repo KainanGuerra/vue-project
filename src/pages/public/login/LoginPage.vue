@@ -12,26 +12,30 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+
+import { defineUserStore } from '../../../stores/user.store';
+const userStore = defineUserStore();
+
 
 const form = reactive({
   email: 'kainanguerra@hotmail.com',
   password: 'P@lmeiras2022'
 })
 
-async function login() {
-  try {
+const errorMessage = ref('')
 
-    const response = await axios.create({
-      headers: {}
-    }).post('http://localhost:3000/api/v1/auth', {
-      email: form.email, 
-      password: form.password,
-    })
-    console.log(response)
+
+const login = async () => {
+  try {
+    const payload = {
+      email: form.email,
+      password: form.password
+    }
+    await userStore.login(payload)
   } catch (err: any) {
-    console.log(err.message)
+    console.error(err.message)
   }
 }
+
 </script>

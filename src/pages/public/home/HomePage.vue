@@ -11,4 +11,6 @@ import HomeFooter from './components/HomeFooter.vue'
 const state = reactive({
   outro: ''
 })
+
+
 </script>
