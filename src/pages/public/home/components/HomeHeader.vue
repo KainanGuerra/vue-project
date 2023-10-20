@@ -3,8 +3,8 @@
     <img class="imgLogo" src="../../../../img/logo4.jpg" alt="">
     <ul class="containerList">
       <li><a class="bbutton" href="#">Sobre</a></li>
-      <li><a class="bbutton" href="#">Contato</a></li>
-      <li><a class="bbutton" href="#">Fotos</a></li>
+      <li><a class="bbutton" href="#contato">Contato</a></li>
+      <!--<li><a class="bbutton" href="#">Fotos</a></li> add other buttons, copy this line-->
     </ul>
     <form>
   <input name="name" autocomplete="off" required />
@@ -16,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+/*import { useRouter } from 'vue-router' ** Active in final project*/
 
-const router = useRouter()
+/*const router = useRouter() ** this too*/
 </script>
 <style scoped>
 

@@ -16,7 +16,6 @@
   font-family: Helvetica, sans-serif
 }
 body {
-  height: 100vh;
   background-color: #151515;
 }
 </style>
