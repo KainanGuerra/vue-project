@@ -1,7 +1,6 @@
 import { productsService } from '@/services/produtcs.service';
 import { defineStore } from 'pinia';
 import { type IFilterProductsByParams } from '@/shared/interface/filter-products-by-params.interface';
-import { EProductsTypes } from '@/shared/enums/produtcs-types.enum';
 export const defineProductsStore = defineStore('produtcs',{
     state: () => ({
         searchParams: undefined,
@@ -10,32 +9,26 @@ export const defineProductsStore = defineStore('produtcs',{
         acessorios: undefined,
         headgears: undefined,
         listProductsPageTermDefined: '',
+        productPage: {},
     }),
     actions:{
         async find(){
             try{
                 const data = await productsService.find();
-                console.log('data:' ,data);
                 const productsGroupedByType = data.reduce((groups: any, item: any) => {
                     const { type } = item;
                   
-                    // Create a new group for the type if it doesn't exist
                     if (!groups[type]) {
                       groups[type] = [];
                     }
                   
-                    // Push the item into the corresponding group
                     groups[type].push(item);
                   
                     return groups;
                   }, {});
-                  // 'groupedByType' is now an object where each property represents a type
-                  console.log(typeof productsGroupedByType)
-                  console.log(productsGroupedByType)
                   this.sneakers = productsGroupedByType.SNEAKER;
                   this.headgears = productsGroupedByType.HEADGEAR;
                   this.acessorios = productsGroupedByType.ACESSORIOS;
-                  
                 return data;
             }catch(err){
                 return []
@@ -50,22 +43,22 @@ export const defineProductsStore = defineStore('produtcs',{
                 return []
             }
         },
-        // async populateProductsOnStore(){
-        //     try{
-        //         const response = 
-        //     }catch(err){
-        //         console.error(err);
-        //         return err
-        //     }
-        // }
-        async getFilterByInput(term: string){
-            //supposed to return all products that contain the term on its name
-            try{
-                // const response = await productsService.
-            }catch(err){
-                console.error(err);
-                return err
-            }
+        async findById(id: number){
+            try {
+                const response = await productsService.findById(id);
+                const clonedResponse = {
+                    id: response.id,
+                    name: response.name,
+                    img: response.photo,
+                    value: response.value, 
+                }
+                this.productPage = clonedResponse;
+            
+                return response;
+              } catch(err: any){
+                console.error(err)
+                alert(`Um erro aconteceu ao buscar o produto: ${err.message}`)
+            }  
         }
     },
 })

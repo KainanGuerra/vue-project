@@ -1,5 +1,13 @@
 <template>
-    <div class="defineHomeContent">
+  <div class="defineHomeContent">
+      <section class="display-sneakers">
+        <img class="main-sneaker" src="../../../../assets/images/triple/tenis1.jpg" alt="">
+        <img class="main-sneaker" src="../../../../assets/images/triple/tenis2.jpg" alt="">
+        <img class="main-sneaker" src="../../../../assets/images/triple/tenis3.jpg" alt="">
+      </section>
+      <!-- <section class="display-sneakers">
+        <img class="main-sneaker" src="../../../../assets/images/main-sneaker-page.jpg" alt="">
+      </section> -->
       <div class="sectionProduct">
         <h1>SNEAKERS</h1> 
         <section class="listProducts">
@@ -60,15 +68,28 @@ onMounted(async () => {
 
 <style scoped>
 .defineHomeContent{
-  width: 960px;
-  color: white
+margin: 0px auto;
+}
+.main-sneaker{
+  border-radius: 10%;
+  height: 300px;
+  transition: 0.3s;
+}
+.main-sneaker:hover{
+  height: 320px;
 }
 .listProducts{
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Three columns in each row */
   gap: 20px; /* Adjust the gap as needed */
 }
-
+.display-sneakers{
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 30px 0px 30px;
+  align-items: center;
+}
 .cardWrapper{
   display: flex;
   justify-content: center; 
@@ -77,12 +98,5 @@ onMounted(async () => {
 .cardWrapper:hover{
   transform: scale(1.02);
 }
-.sectionProduct{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid red;
-  margin-bottom: 25px;
-}
+
 </style>

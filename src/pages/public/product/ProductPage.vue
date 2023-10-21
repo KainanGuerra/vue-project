@@ -1,12 +1,23 @@
 <template>
-  <h1>Product Page</h1>
-  <button @click="useProductsStore.find()">Achar Produtos</button>
+  <main class="defineProductPage">
+    <h1>Product Page</h1>
+  </main>
 </template>
+
 <script setup lang="ts">
 import { defineProductsStore } from '../../../stores/products.store';
+const useProductsStore = defineProductsStore();
 
 
-const useProductsStore = defineProductsStore()
+const productPage = useProductsStore.productPage;
 
-
+const info = {
+  
+}
+console.log(productPage?.asd);
 </script>
+<style scoped>
+.defineProductPage{
+  color:white
+}
+</style>

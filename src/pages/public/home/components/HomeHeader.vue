@@ -1,30 +1,31 @@
 <template>
   <header class="homeHeader">
     <section class="containerHeader">
-      <img class="imgLogo" src="../../../../assets/images/supply-logo.jpg">
+      <img @click="redirect('home')" class="imgLogo" src="../../../../assets/images/supply-logo.jpg">
       <ul class="containerList">
-        <li><a class="redirectBtn" href="#">Sobre</a></li>
-        <li><a class="redirectBtn" href="#">Contato</a></li>
-        <li><a class="redirectBtn" href="#">Fotos</a></li>
+        <li @click="redirect('sneakers')"><a class="redirectBtn">SNEAKERS</a></li>
+        <li @click="redirect('headgears')"><a class="redirectBtn">HEADGEARS</a></li>
+        <li @click="redirect('acessorios')"><a class="redirectBtn">ACESSORIOS</a></li>
       </ul>
       <form>
         <input name="name" autocomplete="off" required placeholder="Pesquisar" />
       </form>
-      <img class="profileIcon" src="../../../../assets/icons/profile.jpg" alt="">
+      <img v-if="user?.email" class="profileIcon" src="../../../../assets/icons/profile.jpg" alt="" @click="redirect('login')">
     </section>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router'
 import { defineUserStore } from '../../../../stores/user.store'
 
 const router = useRouter();
 
 const userStore = defineUserStore();
-const input = ref('')
-console.log(userStore.isUserAutheticated());
+const user = computed(()=>userStore.user)
+
+const redirect = (page: string)=> router.push({name: page})
 
 </script>
 <style scoped>
@@ -47,6 +48,9 @@ console.log(userStore.isUserAutheticated());
   min-height: 100px;
   flex-wrap: wrap;
 }
+.imgLogo{
+  cursor: pointer;
+}
 
 input{
   height: 30px;
@@ -59,12 +63,13 @@ li {
 a{
   color: white;
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 22px;
   width: 100px;
   background-color:#25252554;
   height: 50px;
-  border-radius: 10px;
-  padding: 0.75rem 1rem 0rem 1rem;
+  border-radius: 5pt;
+  padding: 10pt;
+  transition: 0.2s;
 }
 
 a:hover{
@@ -118,28 +123,6 @@ button {
 
 .redirectBtn{
   cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
-
-.redirectBtn:after {
-  content: '»';
-  position: absolute;
-  opacity: 0;  
-  top: 14px;
-  right: -20px;
-  transition: 0.5s;
-}
-
-.redirectBtn:hover{
-  padding-right: 24px;
-  padding-left:8px;
-}
-
-.redirectBtn:hover:after {
-  opacity: 1;
-  right: 10px;
 }
 .profileIcon{
   width: 50px;

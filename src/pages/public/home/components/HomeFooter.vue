@@ -46,7 +46,7 @@ li {
   margin-top: 2px;
   background-color: #0e0e0e;
   color: white;
-  weight: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -2,7 +2,6 @@ import { AxiosInstance } from '@/shared/utils/services/axios-instance';
 
 import { type TUserSignInPayload } from '@/stores/user.store';
 import { type TCreateUserBodyRequest } from '@/shared/types/user/create-user-body.type';
-import axios from 'axios';
 
 export const userService = {
     async singin({email, password}: TUserSignInPayload){
@@ -28,7 +27,6 @@ export const userService = {
             password,
             document,
         }
-        const response = await axios.post('users', payload)
-        return response.data
+        await AxiosInstance.post('/users', payload)
     }
 };

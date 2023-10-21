@@ -52,13 +52,7 @@ export const defineUserStore = defineStore('user',{
             LocalStorage.remove('user');
         },
         async createUser(body: ICreateUserPayload){
-            try{
-                const response = await userService.register(body)
-                return response.data
-            }catch(err){
-                console.error(err)
-                return null
-            }
+            await userService.register(body)
         }
     }
 })

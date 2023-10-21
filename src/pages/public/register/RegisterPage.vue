@@ -1,32 +1,20 @@
 <template>
   <div class="defineRegisterPage">
-    <img class="imgLogo" src="../../../assets/images/supply-logo.jpg" alt="">
-  <section class="sectionRegisterForm">
-    <h1 class="titlePage">Register Page</h1>
+    <section class="sectionRegisterForm">
+      <h1 class="titlePage">Register Page</h1>
     <div>
       <input type="text" v-model="state.name" placeholder="Nome">
-      <span v-if="!$v.name.required">Nome é obrigatório</span>
-    </div>
-    <div>
-      <input type="text" v-model="state.email" placeholder="Email">
-      <span v-if="!$v.email.required">Email é obrigatório</span>
-    </div>
-    <div>
-    <input type="text" v-model="confirmEmail" placeholder="Confirmar Email">
-    <span v-if="!emailConfirmationValid">Os emails não coincidem</span>
-    </div>
-    <div>
-      <input type="password" v-model="state.password" placeholder="Senha">
-      <span v-if="!$v.password.required">Senha é obrigatória</span>
-    </div>
-    <div>
-      <input type="password" v-model="confirmPassword" placeholder="Confirmar Senha">
-      <span v-if="!passwordConfirmationValid">As senhas não coincidem</span>
     </div>
     <div>
       <input type="text" v-model="state.document" placeholder="CPF/CNPJ">
-      <span v-if="!$v.document.required">CPF/CNPJ é obrigatório</span>
     </div>
+    <div>
+      <input type="text" v-model="state.email" placeholder="Email">
+    </div>
+    <div>
+      <input type="password" v-model="state.password" placeholder="Senha">
+    </div>
+
   </section>    
   <button class="btnForm" @click="register">CADASTRAR</button>
   <button class="btnForm" @click="router.push({name: 'home'})">VOLTAR</button>
@@ -34,49 +22,37 @@
 </template>
 
 <script setup lang="ts">
+import { defineUserStore } from '@/stores/user.store';
 import type { TCreateUserBodyRequest } from '../../../shared/types/user/create-user-body.type';
-import useVuelidate from '@vuelidate/core';
-import { reactive, ref, watch } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { defineUserStore } from '../../../stores/user.store';
 
 const router = useRouter();
 const state = reactive<TCreateUserBodyRequest>({
-  name: '',
-  password: '',
-  email: '',
-  document: '',
+  name: 'Kainan Guerra',
+  password: 'Zrp@1234',
+  email: 'asddsoaijds@gmail.com',
+  document: '385.753.620-97',
 });
 
-const rules = {
-  name: { required: true },
-  password: { required: true },
-  email: { required: true },
-  document: { required: true },
-};
+const userStore = defineUserStore();
 
-const $v = useVuelidate(rules, state);
-
-console.log($v.value)
-
-let confirmEmail = '';
-let confirmPassword = '';
-
-const emailConfirmationValid = ref(true);
-const passwordConfirmationValid = ref(true);
-
-watch([() => state.email, () => confirmEmail], ([newEmail, newConfirmEmail]) => {
-  emailConfirmationValid.value = newEmail === newConfirmEmail;
-});
-
-watch([() => state.password, () => confirmPassword], ([newPassword, newConfirmPassword]) => {
-  passwordConfirmationValid.value = newPassword === newConfirmPassword;
-});
-
-
-const userStore = defineUserStore()
 const register = async () => {
 
+try{
+  const body = {
+    name: state.name,
+    password: state.password,
+    email: state.email,
+    document: state.document
+  }
+    await userStore.createUser(body);  
+    alert('Cadastro feito com sucesso')
+    router.push({name: 'home'})
+  }catch(err: any){
+    alert(`Um erro aconteceu: ${err.response.data.message}`)
+    console.error(err.response)
+  }
 }
 
 

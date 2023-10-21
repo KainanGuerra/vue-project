@@ -7,6 +7,10 @@ export const productsService = {
         return response.data
     },
     async filter(params: IFilterProductsByParams){
-        return AxiosInstance.get('products/filter', {params});
+        return await AxiosInstance.get('products/filter', {params});
+    }, 
+    async findById(id: number){
+        const response = await AxiosInstance.get('products/id', {params: {id}})
+        return response.data;
     }
 }

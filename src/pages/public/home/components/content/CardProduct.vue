@@ -1,23 +1,25 @@
 <template>
     <section class="defineCardProduct">
-        <img src="src/assets/images/tenis.ex.jpg">
+        <img src="@/assets/images/tenis.ex.jpg">
         <p class="promotionPrice">{{ promotionPrice }}</p>
         <p class="productPrice">{{ productPriceFormatted }}</p>
         <div>
             <p class="productName">{{ props.productInfo?.name }}</p>
         </div>
         <div class="sectionBtnBuyOrAdd">
-            <button>COMPRAR</button>
-            <button>ADICIONAR AO CARRINHO</button>
+            <button @click="redirect('product', props.productInfo?.id)">COMPRAR</button>
+            <button @click="addToShopCar(props.productInfo?.id)">ADICIONAR AO CARRINHO</button>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { NumberFormatter } from '../../../../../shared/utils/helpers/number-functions.helper';
 type TProductsInfoToCard = {
     productInfo?: {
+        id?: number;
         name?: string;
         value?: number;
         img?: string;
@@ -25,10 +27,19 @@ type TProductsInfoToCard = {
 }
 
 const props = defineProps<TProductsInfoToCard>();
-
 const promotionPrice = computed(()=> NumberFormatter.roundDecimal(props.productInfo?.value ? props.productInfo.value * 1.17 : 0));
 const productPriceFormatted = computed(()=> NumberFormatter.formatToDecimal(props.productInfo?.value));
-
+const router = useRouter();
+const redirect = (page: string, product: any)=>{    
+    try{
+        router.push({name: page, params: { ...product } })
+    }catch(err){
+        console.error(err)
+    }
+} 
+const addToShopCar = (id:any)=>{
+    console.log(id);
+}
 </script>
 
 <style scoped>
