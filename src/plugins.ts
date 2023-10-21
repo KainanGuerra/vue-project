@@ -3,6 +3,7 @@ import { Quasar, Loading, Notify, Dialog, LocalStorage, type QuasarPluginOptions
 import type { App } from 'vue'
 import router from './router'
 import cors from 'cors'
+
 export const QuasarOptions: Partial<QuasarPluginOptions> = {
   plugins: {
     Loading,

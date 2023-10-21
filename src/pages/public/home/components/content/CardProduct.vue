@@ -1,0 +1,85 @@
+<template>
+    <section class="defineCardProduct">
+        <img src="src/assets/images/tenis.ex.jpg">
+        <p class="promotionPrice">{{ promotionPrice }}</p>
+        <p class="productPrice">{{ productPriceFormatted }}</p>
+        <div>
+            <p class="productName">{{ props.productInfo?.name }}</p>
+        </div>
+        <div class="sectionBtnBuyOrAdd">
+            <button>COMPRAR</button>
+            <button>ADICIONAR AO CARRINHO</button>
+        </div>
+    </section>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import { NumberFormatter } from '../../../../../shared/utils/helpers/number-functions.helper';
+type TProductsInfoToCard = {
+    productInfo?: {
+        name?: string;
+        value?: number;
+        img?: string;
+    }
+}
+
+const props = defineProps<TProductsInfoToCard>();
+
+const promotionPrice = computed(()=> NumberFormatter.roundDecimal(props.productInfo?.value ? props.productInfo.value * 1.17 : 0));
+const productPriceFormatted = computed(()=> NumberFormatter.formatToDecimal(props.productInfo?.value));
+
+</script>
+
+<style scoped>
+
+.defineCardProduct{
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 4px solid white;
+    text-align: left;
+    font-weight: 500;
+}
+.defineCardProduct img{
+    width: 100%;
+    border-radius: 10px;
+}
+.promotionPrice{
+    text-decoration: line-through;
+    font-size: x-large;
+}
+.productPrice{
+    font-size: 40px;
+}
+.productName{
+    max-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+    font-size: xx-large;
+}
+.sectionBtnBuyOrAdd{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    gap: 10px
+}
+.sectionBtnBuyOrAdd button{
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10pt;
+    background: white;
+    cursor: pointer;
+    color: black;
+    padding: 10px 0px 10px 0px;
+    height: 45px;
+    font-weight: bold;
+    font-size: large;
+    transition: 0.2s;
+}
+.sectionBtnBuyOrAdd button:hover{
+    transform: scale(1.03);
+}
+</style>

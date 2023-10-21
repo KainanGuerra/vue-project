@@ -3,9 +3,8 @@ import { AxiosInstance } from '@/shared/utils/services/axios-instance';
 import { type TUserSignInPayload } from '@/stores/user.store';
 import { type TCreateUserBodyRequest } from '@/shared/types/user/create-user-body.type';
 import axios from 'axios';
-import type { IReturnUserTokenMapped } from '@/shared/interface/return-user-validate-token.interface';
 
-export const UserService = {
+export const userService = {
     async singin({email, password}: TUserSignInPayload){
         const payload = {
             email,

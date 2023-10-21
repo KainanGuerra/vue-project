@@ -7,5 +7,4 @@ const app = createApp(App)
 
 setupPlugins(app)
 
-
 app.mount('#app')

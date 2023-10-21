@@ -1,5 +1,88 @@
 <template>
-    <h1>PRODUCTS</h1>
+    <div class="defineHomeContent">
+      <div class="sectionProduct">
+        <h1>SNEAKERS</h1> 
+        <section class="listProducts">
+          <div v-for="product in sneakersFound" :key="product.name" class="cardWrapper">
+            <card-product
+            :product-info="product"
+            />
+          </div>
+        </section> 
+      </div>
+      <div class="sectionProduct">
+        <h1>HEADGEARS</h1> 
+        <section class="listProducts">
+          <div v-for="product in headFound" :key="product.name" class="cardWrapper">
+            <card-product
+              :product-info="product"
+            />
+          </div>
+        </section> 
+      </div>
+      <div class="sectionProduct">
+        <h1>ACESSORIOS</h1>
+        <section class="listProducts">
+          <div v-for="product in acessFound" :key="product.name" class="cardWrapper">
+            <card-product
+            :product-info="product"
+            />
+          </div>
+        </section> 
+      </div>
+    </div>
 </template>
+<script setup lang="ts">
+import { computed, onMounted } from 'vue';
+import { defineProductsStore } from '../../../../stores/products.store';
+import CardProduct from './content/CardProduct.vue';
 
-<script setup lang="ts"></script>
+const useProductsStore = defineProductsStore();
+const sneakersFound =  computed<any>(() => {
+  return useProductsStore.sneakers;
+});
+const headFound = computed<any>(()=>{
+  return useProductsStore.headgears;
+});
+const acessFound = computed<any>(()=>{
+  return useProductsStore.acessorios;
+});
+onMounted(async () => {
+  try{
+    console.log();
+    await useProductsStore.find();
+  }catch(err){
+    console.log(err);
+    throw err;
+  }
+});
+</script>
+
+<style scoped>
+.defineHomeContent{
+  width: 960px;
+  color: white
+}
+.listProducts{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns in each row */
+  gap: 20px; /* Adjust the gap as needed */
+}
+
+.cardWrapper{
+  display: flex;
+  justify-content: center; 
+  transition: 0.2s;
+}
+.cardWrapper:hover{
+  transform: scale(1.02);
+}
+.sectionProduct{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid red;
+  margin-bottom: 25px;
+}
+</style>

@@ -1,16 +1,21 @@
 <template>
-  <HomeHeader />
-  <HomeFooter />
+  <div class="defineHomePage">
+    <HomeContent />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import HomeHeader from './components/HomeHeader.vue'
-import HomeFooter from './components/HomeFooter.vue'
-
-const state = reactive({
-  outro: ''
-})
+import HomeContent from './components/HomeContent.vue';
 
 
 </script>
+
+<style scoped>
+.defineHomePage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+}
+</style>
