@@ -139,13 +139,8 @@
                         style="display: none;"
                         @change="handleFileChange" 
                     >
-                    <cropper
-                        class="cropper-instance"
-                        :src="form.selectedFile"
-                        :stencil-props="{
-		                    aspectRatio: 10/12
-	                    }"
-                    />
+                    
+                    
                     <label  
                         class="inputFile"
                         style="width: 110px;"
@@ -172,14 +167,12 @@
                 <input class="btnSubmit" type="button" @click="redirect" value="VOLTAR">
             </div>
         </form>
-        <!-- <circle-stencil /> -->
     </main>
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { Cropper } from 'vue-advanced-cropper';
 
 
 const form = reactive({
