@@ -2,6 +2,7 @@ import CheckoutPageVue from '@/pages/private/Checkout/CheckoutPage.vue'
 import PaymentPageVue from '@/pages/private/Payment/PaymentPage.vue'
 import SummaryPageVue from '@/pages/private/Summary/SummaryPage.vue'
 import AdminPageVue from '@/pages/protected/admin/AdminPage.vue'
+import AddProductVue from '@/pages/protected/products/AddProduct.vue'
 import HomePageVue from '@/pages/public/home/HomePage.vue'
 import LoginPageVue from '@/pages/public/login/LoginPage.vue'
 import ProductPageVue from '@/pages/public/product/ProductPage.vue'
@@ -9,8 +10,12 @@ import RegisterPageVue from '@/pages/public/register/RegisterPage.vue'
 import SneakersPageVue from '@/pages/public/list/SneakersPage.vue'
 import HeadgearsPageVue from '@/pages/public/list/HeadgearsPage.vue'
 import AcessoriosPageVue from '@/pages/public/list/AcessoriosPage.vue'
+import NavigateAdmin from '@/pages/protected/admin/components/NavigateAdmin.vue'
 import { defineUserStore } from '@/stores/user.store'
 import { createRouter, createWebHistory } from 'vue-router'
+import ProfilePageVue from '@/pages/private/Profile/ProfilePage.vue'
+import ListProductsVue from '@/pages/protected/products/ListProducts.vue'
+import ListClientVue from '@/pages/protected/clients/ListClient.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -21,7 +26,12 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: HomePageVue,},
+      component: HomePageVue,
+      meta:{
+        auth: true
+      } 
+        
+    },
         {
           path: '/sneakers',
           name: 'sneakers',
@@ -42,6 +52,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPageVue
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfilePageVue
     },
     {
       path: '/register',
@@ -85,34 +100,61 @@ const router = createRouter({
       path:'/admin',
       name: 'admin',
       component: AdminPageVue,
-      meta:{
-        auth: true
-      }
+      children:[
+        {
+          path: '',
+          name: 'navigate',
+          components: {
+            default: NavigateAdmin,
+          },
+        }
+        ,
+        {
+          path: 'add-product',
+          name: 'addProduct',
+          component: AddProductVue,
+        },
+        {
+          path: 'list-product',
+          name: 'listProduct',
+          component: ListProductsVue,
+        },
+        {
+          path: 'list-clients',
+          name: 'listClients',
+          component: ListClientVue,
+        }
+      ]
     }
   ]
 })
 
 async function checkUserLogged(to: any, from: any, next: any){
   const auth = defineUserStore();
-  const isUserAutheticated = await auth.validateToken(auth.token);
-  if(!isUserAutheticated?.email){
+  const isUserAuthenticated = await auth.validateToken(auth.token);
+  if(!isUserAuthenticated?.email){
     return next({name:'login'})
   }
   next()
 }
 
 router.beforeEach(async (to, from, next)=>{
+  const auth = defineUserStore();
   if(to.meta?.auth){
-    const auth = defineUserStore();
-    const isUserAutheticated = await auth.validateToken(auth.token);
-    console.log(isUserAutheticated.role);
-    if(isUserAutheticated?.role === 'ADMIN'){
-      return next({name: 'admin'})
+    const isUserAuthenticated = await auth.validateToken(auth.token);
+    const userRole = isUserAuthenticated?.role;
+    if(to.name === 'admin' && userRole !== 'ADMIN'){
+      return next({name: 'home'})
     }
-    if(isUserAutheticated?.role === 'CLIENT') return next()
-    return next({name: 'login'})
+    if(from.name === 'login'){
+      if(userRole === 'ADMIN'){
+        return next({name: 'navigate'})
+      } 
+      if(userRole === 'CLIENT') return next()
+      return next({name: 'login'});
+    } 
   }
-  return next()
+  return next();
 })
 
 export default router

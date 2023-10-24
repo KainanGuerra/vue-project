@@ -11,10 +11,6 @@ const useProductsStore = defineProductsStore();
 
 const productPage = useProductsStore.productPage;
 
-const info = {
-  
-}
-console.log(productPage?.asd);
 </script>
 <style scoped>
 .defineProductPage{

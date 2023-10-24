@@ -3,6 +3,7 @@ import type { TUserStore } from '@/shared/types/user/state-user-store.type';
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
 import { type ICreateUserPayload } from '@/shared/interface/create-user-payload.interface';
+import { useRouter } from 'vue-router';
 
 
 export type TUserSignInPayload = {
@@ -18,7 +19,7 @@ export const defineUserStore = defineStore('user',{
     getters:{
     },
     actions:{
-        isUserAutheticated(){
+        isUserAuthenticated(){
             if (this.token == null || this.token == ''){
                 return false;
             }
@@ -37,11 +38,18 @@ export const defineUserStore = defineStore('user',{
             
         },
         async validateToken(token: any){
+            const router = useRouter();
             try{
                 const response = await userService.validate(token);
                 return response.data
-            }catch(err){
-                console.error(err);
+            }catch(err:any){
+                console.error(err.response);
+                alert('Token is expired');
+                await router.push({name: 'login'});
+                this.$state.token = '';
+                this.$state.user = {};
+                LocalStorage.remove('token');
+                LocalStorage.remove('user');           
                 return null;
             }
         },
@@ -52,7 +60,10 @@ export const defineUserStore = defineStore('user',{
             LocalStorage.remove('user');
         },
         async createUser(body: ICreateUserPayload){
-            await userService.register(body)
+            return await userService.register(body)
+        },
+        async listDeliveryAddress(){
+            return await userService.listDeliveryAddress(this.$state.token as string);
         }
     }
 })

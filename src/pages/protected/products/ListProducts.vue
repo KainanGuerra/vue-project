@@ -1,5 +1,5 @@
 <template>
-    <h1>Configure Products</h1>
+    <h1>List ALL Products</h1>
 </template>
 
 <script lang="ts" setup>
