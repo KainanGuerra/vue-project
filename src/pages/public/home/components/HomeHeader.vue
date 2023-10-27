@@ -8,24 +8,30 @@
         <li @click="redirect('acessorios')"><a class="redirectBtn">ACESSORIOS</a></li>
       </ul>
       <form>
-        <input name="name" autocomplete="off" required placeholder="Pesquisar" />
+        <input class="inputText" name="name" autocomplete="off" required placeholder="Pesquisar" />
       </form>
-      <img v-if="user?.email" class="profileIcon" src="../../../../assets/icons/profile.jpg" alt="" @click="redirect('login')">
+      <img v-if="userEmail" class="profileIcon" src="../../../../assets/icons/profile.jpg" alt="" @click="redirect('login')">
     </section>
   </header>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router'
-import { defineUserStore } from '../../../../stores/user.store'
+import { useRouter } from 'vue-router';
+import { defineUserStore } from '../../../../stores/user.store';
 
 const router = useRouter();
 
 const userStore = defineUserStore();
-const user = computed(()=>userStore.user)
+const userEmail = computed(()=>userStore.user?.email)
 
-const redirect = (page: string)=> router.push({name: page})
+const redirect = (page: string)=>{
+    if(page === 'login'){
+      if(!userEmail.value) return router.push({name: page})
+      return router.push({name: 'admin'})
+    }
+    return router.push({name: page})
+} 
 
 </script>
 <style scoped>
@@ -46,15 +52,12 @@ const redirect = (page: string)=> router.push({name: page})
   padding: 1rem;
   gap: 2rem;
   min-height: 100px;
-  flex-wrap: wrap;
+  height: 15vh;
 }
 .imgLogo{
   cursor: pointer;
 }
 
-input{
-  height: 30px;
-}
 
 li {
   list-style-type: none;
@@ -83,7 +86,7 @@ a:hover{
 }
 
 /*Pesquisar*/
-input {
+input, .inputText {
   color: #fff;
   font-size: 1.15rem;
   width: 250px;
@@ -96,29 +99,6 @@ input {
 input:focus {
   border: 2px solid white;
   outline: none;
-}
-span {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-/*button*/
-button {
-  border-radius: 4px;
-  background-color: #5ca1e1;
-  border: none;
-  color: #fff;
-  text-align: center;
-  font-size: 32px;
-  padding: 16px;
-  width: 220px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 36px;
-  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.842);
 }
 
 .redirectBtn{

@@ -30,9 +30,9 @@ const props = defineProps<TProductsInfoToCard>();
 const promotionPrice = computed(()=> NumberFormatter.roundDecimal(props.productInfo?.value ? props.productInfo.value * 1.17 : 0));
 const productPriceFormatted = computed(()=> NumberFormatter.formatToDecimal(props.productInfo?.value));
 const router = useRouter();
-const redirect = (page: string, product: any)=>{    
+const redirect = (page: string, id: any)=>{    
     try{
-        router.push({name: page, params: { ...product } })
+        router.push({name: page, params: { id } })
     }catch(err){
         console.error(err)
     }

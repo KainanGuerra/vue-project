@@ -1,5 +1,6 @@
 <template>
   <div class="defineHomeContent">
+
       <section class="display-sneakers">
         <img class="main-sneaker" src="../../../../assets/images/triple/tenis1.jpg" alt="">
         <img class="main-sneaker" src="../../../../assets/images/triple/tenis2.jpg" alt="">

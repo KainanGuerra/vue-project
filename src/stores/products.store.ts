@@ -1,6 +1,10 @@
 import { productsService } from '@/services/produtcs.service';
 import { defineStore } from 'pinia';
 import { type IFilterProductsByParams } from '@/shared/interface/filter-products-by-params.interface';
+import { type TCreateProduct } from '@/shared/types/products/create-product-type'
+
+
+
 export const defineProductsStore = defineStore('produtcs',{
     state: () => ({
         searchParams: undefined,
@@ -59,6 +63,12 @@ export const defineProductsStore = defineStore('produtcs',{
                 console.error(err)
                 alert(`Um erro aconteceu ao buscar o produto: ${err.message}`)
             }  
+        },
+        async createProduct(body: TCreateProduct, token: string | null ){
+            return await productsService.createProduct(body, token);
+        },
+        async uploadImage(id: number, img: File, token: string | null){
+            return await productsService.uploadImage(id, img, token);
         }
     },
 })

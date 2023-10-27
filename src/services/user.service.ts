@@ -28,5 +28,14 @@ export const userService = {
             document,
         }
         await AxiosInstance.post('/users', payload)
+    },
+    async listDeliveryAddress(token: string){
+        const payload = { 
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }        
+        }
+        return await AxiosInstance.get('/users/address', payload)
+
     }
 };
