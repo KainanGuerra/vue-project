@@ -57,7 +57,7 @@ const redirect = (page: string)=> router.push({name: page})
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 85vh;
   background: white;
 }
 
@@ -65,6 +65,7 @@ form{
   display: flex;
   flex-direction: column;
   width: 350px;
+  margin-bottom: 100px;
 }
 section{
   font-size: 20px;

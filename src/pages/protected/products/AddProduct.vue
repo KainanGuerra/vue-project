@@ -24,7 +24,7 @@
                 <span id="valueDisplay"> R$: {{ form.productValue }}</span>
 
                 <label class="label">Cor do Produto:</label>
-                <select v-model="form.selectColor" class="select-input" placeholder="Cor do produto">
+                <select v-model="form.productColor" class="select-input" placeholder="Cor do produto">
                     <option value="blank"></option>
                     <option value="red">Red</option>
                     <option value="blue">Blue</option>
@@ -41,14 +41,12 @@
                             v-model="form.sizeType" 
                             type="radio" 
                             name="productSizeType" 
-                            @change="console.log(form.sizeType)" 
                             value="number"
                             >
                             Number
                         </label>
                     <label>
                         <input 
-                        @change="console.log(form.sizeType)" 
                         v-model="form.sizeType" 
                         type="radio" 
                         name="productSizeType" 
@@ -85,19 +83,19 @@
                 <label class="label">Tipo:</label>
                 <div class="radio-options">
                     <section>
-                        <input v-model="form.productType" type="radio" name="productType" value="SNEAKER"> 
+                        <input v-model="form.productType" type="radio" name="productType" :value="EProductsTypes.SNEAKER"> 
                         <label>
                             Sneaker
                         </label>
                     </section>
                     <section>
-                        <input v-model="form.productType" type="radio" name="productType" value="HEADGEARS"> 
+                        <input v-model="form.productType" type="radio" name="productType" :value="EProductsTypes.CAP"> 
                         <label>
                             Headgears
                         </label>
                     </section>
                     <section>
-                        <input v-model="form.productType" type="radio" name="productType" value="ACCESSORIES">
+                        <input v-model="form.productType" type="radio" name="productType" :value="EProductsTypes.ACCESSORIES">
                         <label>
                             Accessórios
                         </label>
@@ -109,7 +107,7 @@
                     v-if="form.productType === 'SNEAKER'"
                 >
                     <label for="brandSelect" class="label">Marca</label>
-                    <select id="brandSelect">
+                    <select v-model="form.productBrand" id="brandSelect">
                         <option value="NIKE">NIKE</option>
                         <option value="ADIDAS">ADIDAS</option>
                         <option value="ALLSTAR">ALLSTAR</option>
@@ -118,52 +116,34 @@
                     </select>
                 </section>
             </div>
-            <section class="cropper-section"
+            <section class="cropper-section">
+                <label 
+                    class="inputFile" 
+                    for="productImage"
+                    >
+                    Selecionar Foto
+                </label>
+                <input 
+                    id="productImage" 
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg"
+                    style="display: none;"
+                    @change="handleFileChange" 
                 >
                 <section
                     style="display: flex;
                     flex-direction: column;
                     align-items: center;"
-                    v-if="form.cropper.activated"
-                    >
-                    <label 
-                        class="inputFile" 
-                        for="productImage"
-                        >
-                        Selecionar Foto
-                    </label>
-                    <input 
-                        id="productImage" 
-                        type="file"
-                        accept="image/png, image/jpeg, image/jpg"
-                        style="display: none;"
-                        @change="handleFileChange" 
+                    v-if="!form.selectedFile"
                     >
                     
-                    
-                    <label  
-                        class="inputFile"
-                        style="width: 110px;"
-                        v-if="form.selectedFile" 
-                        for="cropImage">
-                        CORTAR
-                    </label>
-                    <input
-                        id="cropImage"
-                        style="display: none;"
-                        type="button"
-                        :disabled="!form.selectedFile"
-                        @click="crop"
-                    >
+                    <div class="cropper-instance"></div>
                 </section>
-                    <section v-if="!form.cropper.activated" style="display: flex; flex-direction: column;">
-                        <img style="width: 300px;" :src="form.selectedFile">
-                        <input class="btnSubmit" type="button" @click="form.selectedFile = ''" value="RECORTAR">
-                    </section>
-                </section>
+                <img v-if="form.selectedFile" style="width: 250px;" :src="form.selectedFile">
             </section>
+        </section>
             <div style="display: flex; flex-direction: column; margin-top: 20px;">
-                <input class="btnSubmit" type="submit" value="CRIAR PRODUTO">
+                <input class="inputFile" @click="submit" type="button" value="CRIAR PRODUTO">
                 <input class="btnSubmit" type="button" @click="redirect" value="VOLTAR">
             </div>
         </form>
@@ -171,36 +151,63 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { ESneakersBrands } from '@/shared/enums/products-brands.enum';
+import { EProductsTypes } from '@/shared/enums/produtcs-types.enum';
+import { TCreateProduct } from '@/shared/types/products/create-product-type';
+import { defineProductsStore } from '@/stores/products.store';
+import { defineUserStore } from '@/stores/user.store';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const productsStore = defineProductsStore();
+const userStore = defineUserStore();
 
-const form = reactive({
+
+const form = ref({
     productName: '',
-    selectColor: '',
     productValue: '',
     sizeType: '',
     productSize: '',
     productType: '',
-    cropper: {
-        activated: true,
-    },
-    selectedFile: null as any,
+    productBrand: '',
+    productColor: '',
+    selectedFile: '' as any,
+    fileAsFile: '' as any,
 })
 const handleFileChange = async (event: any) =>{
     const inputElement = await event.target;
     const file = inputElement.files[0];
+    form.value.fileAsFile = file;
     if (file) {
         const fileReader = new FileReader();
         fileReader.onload = (e: any) => {
             const fileData = e.target.result;
-            form.selectedFile = fileData;
+            form.value.selectedFile = fileData;
         };
         fileReader.readAsDataURL(file);
     }
 }
-const crop = () =>{
-    
+
+const submit = async()=>{
+    try{
+        const body: TCreateProduct = {
+            name: form.value.productName,
+            value: +form.value.productValue,
+            type: form.value.productType as EProductsTypes,
+            brand: form.value.productBrand as ESneakersBrands,
+            color: form.value.productColor,
+            size: form.value.productSize,
+        }
+        const token = userStore.token;
+        const response = await productsStore.createProduct(body, token);
+        const productId = response.id;
+        await productsStore.uploadImage(productId, form.value.fileAsFile, token);
+        alert('Produto criado com sucesso');
+        return redirect(); 
+    }catch(err: any){
+        alert(`Um erro aconteceu: ${err.message}`);
+        console.error(err);
+    }
 }
 const router = useRouter();
 const redirect = () => router.push({name: 'admin'});
@@ -255,6 +262,7 @@ form{
   display: flex;
   color: white;
   align-items: center;
+  text-align: center;
   justify-content: center;
   background-color: black;
   border: none;
@@ -275,22 +283,20 @@ form{
 }
 .btnSubmit{
     background: rgb(233, 233, 233);
-    padding: 5px 15px;
+    padding: 6px 15px;
     color: rgb(43, 43, 43);
     border: none;
     cursor: pointer;
     border-radius: 5pt;
-    font-weight: bold;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 18px;
     margin-top: 10px;
     transition: 0.15s
 }
-.btnSubmit:hover{
-    transform: scale(1.02)
-}
+
 .cropper-instance{
-    height: 300px;
-    width: 300px;
+    height: 250px;
+    width: 250px;
     background: #DDD;
 }
 </style>

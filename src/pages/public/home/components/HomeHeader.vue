@@ -53,7 +53,6 @@ const redirect = (page: string)=>{
   gap: 2rem;
   min-height: 100px;
   height: 15vh;
-  flex-wrap: wrap;
 }
 .imgLogo{
   cursor: pointer;
@@ -100,29 +99,6 @@ input, .inputText {
 input:focus {
   border: 2px solid white;
   outline: none;
-}
-span {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-/*button*/
-button {
-  border-radius: 4px;
-  background-color: #5ca1e1;
-  border: none;
-  color: #fff;
-  text-align: center;
-  font-size: 32px;
-  padding: 16px;
-  width: 220px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 36px;
-  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.842);
 }
 
 .redirectBtn{

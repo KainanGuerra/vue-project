@@ -58,4 +58,7 @@ color: white
   border-radius: 5pt;
   transition: 0.1s;
 }
+input:focus {
+  outline: none;
+}
 </style>
