@@ -1,16 +1,14 @@
 <template>
     <main class="defineAddProducts">
-        <h1>Add Products</h1>
+        <h3>Add Products</h3>
         <form>
             <section class="defineBoxes">
             <div class="leftBox">
-                <label class="label">Nome:</label>
-                <input 
-                    v-model="form.productName" 
-                    type="text" 
-                    placeholder="Nome do Produto"
-                    class="inputText"
-                    >
+                <q-input
+                    v-model="form.productName"
+                    outlined
+                    label="Nome" 
+                />
                 <label class="label" for="rangeInput">Valor:</label>
 
                 <input

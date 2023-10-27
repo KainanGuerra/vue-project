@@ -4,6 +4,13 @@ import type { App } from 'vue'
 import router from './router'
 import cors from 'cors'
 
+// Import icon libraries
+import '@quasar/extras/material-icons/material-icons.css'
+
+// Import Quasar css
+import 'quasar/src/css/index.sass'
+
+
 export const QuasarOptions: Partial<QuasarPluginOptions> = {
   plugins: {
     Loading,

@@ -14,7 +14,7 @@
 .defineAdminPage{
   display: flex;
   padding: 50px 0px;
-  height: 85vh;
+  height: auto;
   background-color: white;
   flex-direction: column;
   justify-content: flex-start;
