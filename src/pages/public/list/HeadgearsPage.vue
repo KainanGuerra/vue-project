@@ -1,7 +1,7 @@
 <template>
     <div class="defineHomeContent">
       <div class="sectionProduct">
-        <h1>HEADGEARS</h1> 
+        <h2>HEADGEARS</h2> 
         <section class="listProducts">
           <div v-for="product in headFound" :key="product.name" class="cardWrapper">
             <card-product
@@ -9,6 +9,7 @@
             />
           </div>
         </section> 
+        <h4 v-if="!headFound">Nenhum produto cadastrado</h4>
       </div>
     </div>
 </template>

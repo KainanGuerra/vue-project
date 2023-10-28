@@ -16,7 +16,7 @@ const userRole = computed(()=> userStore.user?.role)
 <template>
   <HomeHeader />
   <router-view />
-  <HomeFooter v-if="userRole === 'CLIENT'"/>
+  <HomeFooter v-if="(userRole !== 'ADMIN')"/>
 </template>
 <style>
 * {
@@ -38,7 +38,8 @@ body {
 .defineHomeContent{
 margin: 50px auto;
 width: 960px;
-color: white
+height: 100%;
+color: white;
 }
 
 .sectionProduct{

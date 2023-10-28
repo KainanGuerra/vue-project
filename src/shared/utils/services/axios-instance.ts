@@ -8,3 +8,9 @@ export const AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   }
 });
+export const AxiosUpload = axios.create({
+  baseURL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  }
+});

@@ -1,7 +1,7 @@
 <template>
   <div class="defineHomeContent">
     <div class="sectionProduct">
-      <h1>SNEAKERS</h1> 
+      <h2>SNEAKERS</h2> 
       <section class="listProducts">
         <div v-for="product in sneakersFound" :key="product.name" class="cardWrapper">
           <card-product
@@ -9,6 +9,7 @@
           />
         </div>
       </section> 
+      <h4 v-if="!sneakersFound">Nenhum produto cadastrado</h4>
     </div>
   </div>
 </template>
@@ -16,11 +17,11 @@
 import { computed, onMounted } from 'vue';
 import { defineProductsStore } from '@/stores/products.store';
 import CardProduct from '../home/components//content/CardProduct.vue';
-
 const useProductsStore = defineProductsStore();
 const sneakersFound =  computed<any>(() => {
-return useProductsStore.sneakers;
+  return useProductsStore.sneakers;
 });
+console.log(sneakersFound.value);
 
 onMounted(async () => {
 try{

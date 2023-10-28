@@ -6,11 +6,8 @@
         <img class="main-sneaker" src="../../../../assets/images/triple/tenis2.jpg" alt="">
         <img class="main-sneaker" src="../../../../assets/images/triple/tenis3.jpg" alt="">
       </section>
-      <!-- <section class="display-sneakers">
-        <img class="main-sneaker" src="../../../../assets/images/main-sneaker-page.jpg" alt="">
-      </section> -->
       <div class="sectionProduct">
-        <h1>SNEAKERS</h1> 
+        <h2>SNEAKERS</h2> 
         <section class="listProducts">
           <div v-for="product in sneakersFound" :key="product.name" class="cardWrapper">
             <card-product
@@ -20,7 +17,7 @@
         </section> 
       </div>
       <div class="sectionProduct">
-        <h1>HEADGEARS</h1> 
+        <h2>HEADGEARS</h2> 
         <section class="listProducts">
           <div v-for="product in headFound" :key="product.name" class="cardWrapper">
             <card-product
@@ -30,7 +27,7 @@
         </section> 
       </div>
       <div class="sectionProduct">
-        <h1>ACESSORIOS</h1>
+        <h2>ACESSORIOS</h2>
         <section class="listProducts">
           <div v-for="product in acessFound" :key="product.name" class="cardWrapper">
             <card-product
