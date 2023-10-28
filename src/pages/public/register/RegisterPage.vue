@@ -17,7 +17,7 @@
 
   </section>    
   <button class="btnForm" @click="register">CADASTRAR</button>
-  <button class="btnForm" @click="router.push({name: 'home'})">VOLTAR</button>
+  <button class="btnForm" @click="router.push({name: 'login'})">VOLTAR</button>
   </div>
 </template>
 

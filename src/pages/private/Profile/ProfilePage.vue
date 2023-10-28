@@ -20,6 +20,11 @@
       <h2>Pedidos Feitos</h2>
       <button @click="findUserPurchases">Procurar</button>
       <h2>Endereços</h2>
+
+      <list-address-vue 
+      :addresses="[]"
+      />
+      {{ 'Encontrado' + addressesFound }}
     </div>
   </main>
 </template>
@@ -27,6 +32,7 @@
 import { definePurchaseStore } from '@/stores/purchase.store';
 import { defineUserStore } from '@/stores/user.store';
 import { computed } from 'vue';
+import ListAddressVue from './components/ListAddress.vue';
 
 const userStore = defineUserStore();
 const purchaseStore = definePurchaseStore();
@@ -42,6 +48,8 @@ const findUserPurchases = async () => {
     console.error(err.message)
   }
 }
+
+const addressesFound = computed(()=> userStore.listDeliveryAddress());
 
 </script>
 <style scoped>

@@ -1,36 +1,42 @@
 <template>
     <main class="defineAddProducts">
         <h3>Add Products</h3>
-        <form>
+        <q-form class="q-my-md">
             <section class="defineBoxes">
             <div class="leftBox">
                 <q-input
                     v-model="form.productName"
+                    bg-color="white"
+                    class="text-h5 q-mb-md"
+                    color="black"
                     outlined
                     label="Nome" 
                 />
-                <label class="label" for="rangeInput">Valor:</label>
-
-                <input
-                    type="range"
+                
+                 <q-select
+                        v-model="form.productColor"
+                        color="black"
+                        bg-color="white"
+                        outlined
+                        label="Cor do Produto"
+                        placeholder="Selecione a cor do produto"
+                        :options="colorOptions"
+                    > 
+                    <template #append>
+                        <div v-if="form.productColor.value" class="color-square" :style="{ backgroundColor: form.productColor.value }"></div>
+                    </template>
+                    </q-select>
+                <q-slider
                     v-model="form.productValue"
-                    min="0"
-                    max="1000"
-                    step="10"
-                    />
+                    color="black"
+                    :min="0"
+                    :max="1000"
+                    :step="10"
+                />
+                 <label 
+                        class="text-h5"
+                    for="rangeInput">Valor: R$: {{ form.productValue }}</label>
 
-                <span id="valueDisplay"> R$: {{ form.productValue }}</span>
-
-                <label class="label">Cor do Produto:</label>
-                <select v-model="form.productColor" class="select-input" placeholder="Cor do produto">
-                    <option value="blank"></option>
-                    <option value="red">Red</option>
-                    <option value="blue">Blue</option>
-                    <option value="green">Green</option>
-                    <option value="yellow">Yellow</option>
-                    <option value="black">Black </option>
-                    <option value="white">White</option>
-                </select>
                 <div class="sizeSection">
                     <label class="label">Tamanho:</label>
                     <div>
@@ -115,36 +121,48 @@
                 </section>
             </div>
             <section class="cropper-section">
-                <label 
-                    class="inputFile" 
-                    for="productImage"
+                <section v-if="!croppedImage" class="row items-center column">
+                    <label 
+                        class="inputFile" 
+                        for="productImage"
+                        >
+                        Selecionar Foto
+                    </label>
+                    <input 
+                        id="productImage" 
+                        type="file"
+                        accept="image/png, image/jpeg, image/jpg"
+                        style="display: none;"
+                        @change="handleFileChange" 
                     >
-                    Selecionar Foto
-                </label>
-                <input 
-                    id="productImage" 
-                    type="file"
-                    accept="image/png, image/jpeg, image/jpg"
-                    style="display: none;"
-                    @change="handleFileChange" 
-                >
-                <section
-                    style="display: flex;
-                    flex-direction: column;
-                    align-items: center;"
-                    v-if="!form.selectedFile"
-                    >
-                    
-                    <div class="cropper-instance"></div>
+
+                    <cropper
+                        ref="cropperComponentRef"
+                        class="cropper-instance q-my-md"
+                        :src="form.selectedFile"
+                        :stencil-props="{
+                            aspectRatio: 12/12
+                        }"
+                    />
+                    <q-btn 
+                        label="RECORTAR"
+                        @click="crop"
+                    />           
                 </section>
-                <img v-if="form.selectedFile" style="width: 250px;" :src="form.selectedFile">
+                <section class="row column" v-if="croppedImage">
+                    <img style="width: 250px;" :src="croppedImage">
+                    <q-btn 
+                        class="q-mt-md"
+                        label="VOLTAR"
+                        @click="croppedImage = ''"/>
+                </section>
             </section>
         </section>
             <div style="display: flex; flex-direction: column; margin-top: 20px;">
                 <input class="inputFile" @click="submit" type="button" value="CRIAR PRODUTO">
                 <input class="btnSubmit" type="button" @click="redirect" value="VOLTAR">
             </div>
-        </form>
+        </q-form>
     </main>
 </template>
 
@@ -154,28 +172,80 @@ import { EProductsTypes } from '@/shared/enums/produtcs-types.enum';
 import { TCreateProduct } from '@/shared/types/products/create-product-type';
 import { defineProductsStore } from '@/stores/products.store';
 import { defineUserStore } from '@/stores/user.store';
+import { Cropper } from 'vue-advanced-cropper';
+import 'vue-advanced-cropper/dist/style.css'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { base64ToFile } from '@/shared/utils/helpers/base64-converter.helper';
+import { useQuasar } from 'quasar';
 const productsStore = defineProductsStore();
 const userStore = defineUserStore();
 
+type TProductColor = {
+    label: string,
+    value: string,
+}
+const $q = useQuasar();
+
+const cropperComponentRef = ref<typeof Cropper | null>(null);
+const croppedImage = ref('');
+const crop = async () => {
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    const { canvas } = cropperComponentRef?.value?.getResult();
+    if (canvas) {
+        croppedImage.value = canvas.toDataURL();
+        const fileConverted = base64ToFile(croppedImage.value, 'file');
+        form.value.imageToBeSent = fileConverted;
+    }
+}
 
 const form = ref({
     productName: '',
-    productValue: '',
+    productValue: 0,
     sizeType: '',
-    productSize: '',
+    productSize: 0,
     productType: '',
     productBrand: '',
-    productColor: '',
+    productColor: {
+        label: 'Selecione uma cor:',
+        value: '' ,
+    } as TProductColor,
     selectedFile: '' as any,
-    fileAsFile: '' as any,
+    imageToBeSent: '' as any,
+    croppedImage: ''
 })
+
+const colorOptions = [
+  {
+    label: 'Red',
+    value: 'red',
+  },
+  {
+    label: 'Blue',
+    value: 'blue',
+  },
+  {
+    label: 'Green',
+    value: 'green',
+  },
+  {
+    label: 'Yellow',
+    value: 'yellow',
+  },
+  {
+    label: 'Black',
+    value: 'black',
+  },
+  {
+    label: 'White',
+    value: 'white',
+  },
+];
+
 const handleFileChange = async (event: any) =>{
     const inputElement = await event.target;
     const file = inputElement.files[0];
-    form.value.fileAsFile = file;
+    form.value.imageToBeSent = file;
     if (file) {
         const fileReader = new FileReader();
         fileReader.onload = (e: any) => {
@@ -186,6 +256,7 @@ const handleFileChange = async (event: any) =>{
     }
 }
 
+
 const submit = async()=>{
     try{
         const body: TCreateProduct = {
@@ -193,22 +264,22 @@ const submit = async()=>{
             value: +form.value.productValue,
             type: form.value.productType as EProductsTypes,
             brand: form.value.productBrand as ESneakersBrands,
-            color: form.value.productColor,
-            size: form.value.productSize,
+            color: form.value.productColor.value,
+            size: form.value.productSize.toString(),
         }
         const token = userStore.token;
         const response = await productsStore.createProduct(body, token);
         const productId = response.id;
-        await productsStore.uploadImage(productId, form.value.fileAsFile, token);
-        alert('Produto criado com sucesso');
+        await productsStore.uploadImage(productId, form.value.imageToBeSent, token);
+        $q.notify({color: 'positive', message: 'Product has been created successfully'});
         return redirect(); 
     }catch(err: any){
-        alert(`Um erro aconteceu: ${err.message}`);
         console.error(err);
+        $q.notify({color: 'negative', message: 'An Error Has Been Occurred', caption: err.message});
     }
 }
 const router = useRouter();
-const redirect = () => router.push({name: 'admin'});
+const redirect = () => router.push({name: 'navigate'});
 
 </script>
 <style scoped>
@@ -218,7 +289,12 @@ const redirect = () => router.push({name: 'admin'});
     justify-content: center;
     align-items: center;
 }
-
+.color-square {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  display: inline-block;
+}
 .defineBoxes{
     display: flex;
 }

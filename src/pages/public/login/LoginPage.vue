@@ -1,6 +1,6 @@
 <template>
   <main class="defineLoginPage">
-    <h1>Login</h1>
+    <h2>Login</h2>
     <form @submit.prevent="login">
       <section>
         <label>Email</label>

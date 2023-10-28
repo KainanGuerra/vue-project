@@ -16,6 +16,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ProfilePageVue from '@/pages/private/Profile/ProfilePage.vue'
 import ListProductsVue from '@/pages/protected/products/ListProducts.vue'
 import ListClientVue from '@/pages/protected/clients/ListClient.vue'
+import AddAddressVue from '@/pages/private/Profile/components/AddAddress.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -56,7 +57,12 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: ProfilePageVue
+      component: ProfilePageVue,
+    },
+    {
+      path: '/profile/address',
+      name: 'address',
+      component: AddAddressVue,
     },
     {
       path: '/register',
@@ -124,7 +130,10 @@ const router = createRouter({
           name: 'listClients',
           component: ListClientVue,
         }
-      ]
+      ],
+      meta:{
+        auth: true
+      } 
     }
   ]
 })
@@ -140,10 +149,11 @@ async function checkUserLogged(to: any, from: any, next: any){
 
 router.beforeEach(async (to, from, next)=>{
   const auth = defineUserStore();
+  if(to.name === 'home' || to.name === 'login') return next();
   if(to.meta?.auth){
     const isUserAuthenticated = await auth.validateToken(auth.token);
     const userRole = isUserAuthenticated?.role;
-    if(to.name === 'admin' && userRole !== 'ADMIN'){
+    if(to.name === 'navigate' && userRole !== 'ADMIN'){
       return next({name: 'home'})
     }
     if(from.name === 'login'){
