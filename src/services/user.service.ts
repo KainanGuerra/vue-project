@@ -2,7 +2,7 @@ import { AxiosInstance } from '@/shared/utils/services/axios-instance';
 
 import { type TUserSignInPayload } from '@/stores/user.store';
 import { type TCreateUserBodyRequest } from '@/shared/types/user/create-user-body.type';
-
+import { TAddress } from '@/shared/types/user/address-definition-type'
 export const userService = {
     async singin({email, password}: TUserSignInPayload){
         const payload = {
@@ -35,7 +35,25 @@ export const userService = {
                 Authorization: `Bearer ${token}`,
             }        
         }
-        return await AxiosInstance.get('/users/address', payload)
-
+        const {data} = await AxiosInstance.get('/users/address', payload)
+        return data;
+    },
+    async addDeliveryAddress(body: TAddress, token: string){
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }        
+        }
+            const {data} = await AxiosInstance.post('/users/address', body, config);
+        return data;
+    },
+    async deleteAddress(id: number, token: string){
+        const payload = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+        const { data } = await AxiosInstance.patch(`/users/address/${id}`, payload);
+        return data;
     }
 };

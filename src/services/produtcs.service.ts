@@ -1,4 +1,4 @@
-import { AxiosInstance } from '@/shared/utils/services/axios-instance'
+import { AxiosInstance, AxiosUpload } from '@/shared/utils/services/axios-instance'
 import { type IFilterProductsByParams } from '@/shared/interface/filter-products-by-params.interface';
 import { type TCreateProduct } from '@/shared/types/products/create-product-type'
 export const productsService = {
@@ -23,15 +23,17 @@ export const productsService = {
         return response.data;
     },
     async uploadImage(id: number, image: File, token: string | null){
-        const formData = new FormData();
+        const formData = new FormData() as any;
         formData.append('file', image);
-      
+        console.log(formData.has('file'));
         const config = {
             headers: {
-              Authorization: `Bearer ${token}`, 
+              'Authorization': `Bearer ${token}`, 
+              'Content-Type': `multipart/form-data; 
+              boundary=${formData._boundary}`
             },
           };
-        const response = await AxiosInstance.post(`products/${id}`, formData, config);
+        const response = await AxiosUpload.patch(`http://localhost:3000/api/v1/products/upload/${id}`, formData, config);
         return response.data;
     },
 }

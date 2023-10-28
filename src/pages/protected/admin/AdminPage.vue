@@ -1,8 +1,8 @@
 <template>
   <main class="defineAdminPage">
-      <h1>
+      <h2>
         Admin Page
-      </h1>
+      </h2>
       <router-view />
   </main>
 </template>
@@ -14,7 +14,7 @@
 .defineAdminPage{
   display: flex;
   padding: 50px 0px;
-  height: auto;
+  height: 100%;
   background-color: white;
   flex-direction: column;
   justify-content: flex-start;

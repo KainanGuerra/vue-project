@@ -1,10 +1,10 @@
 import { userService } from '@/services/user.service';
-import type { TUserStore } from '@/shared/types/user/state-user-store.type';
+import { TUserStore } from '@/shared/types/user/state-user-store.type';
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
 import { type ICreateUserPayload } from '@/shared/interface/create-user-payload.interface';
 import { useRouter } from 'vue-router';
-
+import { TAddress } from '@/shared/types/user/address-definition-type'
 
 export type TUserSignInPayload = {
     email: string;
@@ -63,7 +63,14 @@ export const defineUserStore = defineStore('user',{
             return await userService.register(body)
         },
         async listDeliveryAddress(){
-            return await userService.listDeliveryAddress(this.$state.token as string);
+            const response = await userService.listDeliveryAddress(this.$state.token as string);
+            console.log(response);
+            return response;
+        },
+        async addDeliveryAddress(body: TAddress){
+            const response = await userService.addDeliveryAddress(body, this.$state.token as string);
+            console.log(response);
+            return response;
         }
     }
 })
