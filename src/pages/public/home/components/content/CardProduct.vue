@@ -1,12 +1,15 @@
 <template>
-    <section class="defineCardProduct">
-        <img src="@/assets/images/tenis.ex.jpg">
-        <p class="promotionPrice">{{ promotionPrice }}</p>
-        <p class="productPrice">{{ productPriceFormatted }}</p>
+    <section class="defineCardProduct row column">
+        <div class="row items-center" style="height: 290px;">
+            <img style="width: 100%;" v-if="props.productInfo?.photo" :src="props.productInfo.photo" alt="">
+            <img v-else src="@/assets/images/tenis.ex.jpg">
+        </div>
+        <span class="promotionPrice">R$ {{ promotionPrice }}</span >
+        <span class="productPrice">R$ {{ productPriceFormatted }}</span >
         <div>
             <p class="productName">{{ props.productInfo?.name }}</p>
         </div>
-        <div class="sectionBtnBuyOrAdd">
+        <div class="sectionBtnBuyOrAdd row column full-width">
             <button @click="redirect('product', props.productInfo?.id)">COMPRAR</button>
             <button @click="addToShopCar(props.productInfo?.id)">ADICIONAR AO CARRINHO</button>
         </div>
@@ -22,7 +25,7 @@ type TProductsInfoToCard = {
         id?: number;
         name?: string;
         value?: number;
-        img?: string;
+        photo?: string;
     }
 }
 

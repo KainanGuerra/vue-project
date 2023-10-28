@@ -30,6 +30,7 @@ export const defineProductsStore = defineStore('produtcs',{
                   
                     return groups;
                   }, {});
+                  console.log(productsGroupedByType)
                   this.sneakers = productsGroupedByType.SNEAKER;
                   this.headgears = productsGroupedByType.HEADGEAR;
                   this.acessorios = productsGroupedByType.ACESSORIOS;

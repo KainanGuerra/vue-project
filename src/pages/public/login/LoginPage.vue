@@ -19,10 +19,12 @@
 </template>
 
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router';
 
 import { defineUserStore } from '../../../stores/user.store';
+const $q = useQuasar()
 const userStore = defineUserStore();
 
 
@@ -39,10 +41,12 @@ const login = async () => {
       password: form.password
     }
     await userStore.login(payload)
-    alert('Login efetuado com sucesso');
+    $q.notify({color: 'positive', message: 'User logged in successfully'});
     router.push({name: 'home'})
   } catch (err: any) {
     console.error(err.message)
+    $q.notify({color: 'negative', message: 'An Error Has Been Occurred', caption: err.message});
+
   }
 }
 

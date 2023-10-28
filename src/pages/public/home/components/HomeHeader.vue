@@ -62,6 +62,7 @@ const input = ref('');
 const redirect = (page: string)=>{
     if(page === 'login'){
       if(!userEmail.value) return router.push({name: page})
+      if(userStore.user?.role === 'CLIENT') return router.push({name: 'profile'})
       return router.push({name: 'navigate'})
     }
     return router.push({name: page})
