@@ -159,8 +159,8 @@
             </section>
         </section>
             <div style="display: flex; flex-direction: column; margin-top: 20px;">
-                <input class="inputFile" @click="submit" type="button" value="CRIAR PRODUTO">
-                <input class="btnSubmit" type="button" @click="redirect" value="VOLTAR">
+                <q-btn color="white" @click="submit" label="CRIAR PRODUTO" />
+                <q-btn color="black" @click="redirect" label="VOLTAR" />
             </div>
         </q-form>
     </main>

@@ -21,7 +21,6 @@ const useProductsStore = defineProductsStore();
 const sneakersFound =  computed<any>(() => {
   return useProductsStore.sneakers;
 });
-console.log(sneakersFound.value);
 
 onMounted(async () => {
 try{
