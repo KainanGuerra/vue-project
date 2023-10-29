@@ -15,6 +15,7 @@ export const defineUserStore = defineStore('user',{
     state: (): TUserStore => ({
         token: LocalStorage.getItem('token'),
         user: LocalStorage.getItem('user'),
+        clients: [],
     }),
     getters:{
     },
@@ -71,6 +72,11 @@ export const defineUserStore = defineStore('user',{
             const response = await userService.addDeliveryAddress(body, this.$state.token as string);
             console.log(response);
             return response;
+        },
+        async fetchClients(){
+            const response = await userService.fetchClients(this.$state.token as string);
+            this.$state.clients = response;
+            return response
         }
     }
 })

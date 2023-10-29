@@ -55,5 +55,14 @@ export const userService = {
         }
         const { data } = await AxiosInstance.patch(`/users/address/${id}`, payload);
         return data;
+    },
+    async fetchClients(token: string){
+        const payload = { 
+            headers: {
+                'inner-authorization': `Bearer ${token}`,
+            }        
+        }
+        const { data } = await AxiosInstance.get('/users', payload);
+        return data;
     }
 };

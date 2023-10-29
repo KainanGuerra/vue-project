@@ -14,7 +14,7 @@ import NavigateAdmin from '@/pages/protected/admin/components/NavigateAdmin.vue'
 import { defineUserStore } from '@/stores/user.store'
 import { createRouter, createWebHistory } from 'vue-router'
 import ProfilePageVue from '@/pages/private/Profile/ProfilePage.vue'
-import ListProductsVue from '@/pages/protected/products/ListProducts.vue'
+import ListProductsVue from '@/pages/protected/products/ListProductsPage.vue'
 import ListClientVue from '@/pages/protected/clients/ListClient.vue'
 import AddAddressVue from '@/pages/private/Profile/components/AddAddress.vue'
 const router = createRouter({

@@ -12,6 +12,7 @@ export const defineProductsStore = defineStore('produtcs',{
         sneakers: undefined,
         acessorios: undefined,
         headgears: undefined,
+        allProducts: [],
         listProductsPageTermDefined: '',
         productPage: {},
     }),
@@ -19,6 +20,7 @@ export const defineProductsStore = defineStore('produtcs',{
         async find(){
             try{
                 const data = await productsService.find();
+                this.allProducts = data;
                 const productsGroupedByType = data.reduce((groups: any, item: any) => {
                     const { type } = item;
                   
@@ -30,7 +32,6 @@ export const defineProductsStore = defineStore('produtcs',{
                   
                     return groups;
                   }, {});
-                  console.log(productsGroupedByType)
                   this.sneakers = productsGroupedByType.SNEAKER;
                   this.headgears = productsGroupedByType.HEADGEAR;
                   this.acessorios = productsGroupedByType.ACESSORIOS;
