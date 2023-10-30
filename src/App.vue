@@ -6,6 +6,7 @@ import HomeHeader from './pages/public/home/components/HomeHeader.vue';
 import HomeFooter from './pages/public/home/components/HomeFooter.vue';
 import { defineUserStore } from './stores/user.store';
 import { computed } from 'vue';
+import ProfilePage from './pages/private/Profile/ProfilePage.vue';
 
 const userStore = defineUserStore();
 
@@ -16,6 +17,7 @@ const userRole = computed(()=> userStore.user?.role)
 <template>
   <HomeHeader />
   <router-view />
+  <ProfilePage />
   <HomeFooter v-if="(userRole !== 'ADMIN')"/>
 </template>
 <style>
