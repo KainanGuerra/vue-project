@@ -84,23 +84,16 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: CheckoutPageVue,
-      children: [
-        {
-          path: '/summary',
-          name: 'summary',
-          component: SummaryPageVue,
-          children: [
-            {
-              path: '/payment',
-              name: 'payment',
-              component: PaymentPageVue
-            }
-          ],
-        },
-      ],
-      meta: {
-        auth: true
-      }
+    },
+    {
+      path: '/checkout/summary',
+      name: 'summary',
+      component: SummaryPageVue,
+    },
+    {
+      path: '/checkout/summary/payment',
+      name: 'payment',
+      component: PaymentPageVue
     },
     {
       path:'/admin',
@@ -162,8 +155,9 @@ router.beforeEach(async (to, from, next)=>{
       } 
       if(userRole === 'CLIENT') return next()
       return next({name: 'login'});
-    } 
+    }
   }
+  if(to.name === 'payment' && from.name !== 'checkout') return next({name: 'home'})
   return next();
 })
 

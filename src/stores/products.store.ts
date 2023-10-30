@@ -2,6 +2,7 @@ import { productsService } from '@/services/produtcs.service';
 import { defineStore } from 'pinia';
 import { type IFilterProductsByParams } from '@/shared/interface/filter-products-by-params.interface';
 import { type TCreateProduct } from '@/shared/types/products/create-product-type'
+import { useQuasar } from 'quasar';
 
 
 
@@ -9,12 +10,12 @@ export const defineProductsStore = defineStore('produtcs',{
     state: () => ({
         searchParams: undefined,
         products: undefined,
-        sneakers: undefined,
-        acessorios: undefined,
-        headgears: undefined,
+        sneakers: [],
+        accessories: [],
+        headgears: [],
         allProducts: [],
         listProductsPageTermDefined: '',
-        productPage: {},
+        productPage: {} as any,
     }),
     actions:{
         async find(){
@@ -32,9 +33,10 @@ export const defineProductsStore = defineStore('produtcs',{
                   
                     return groups;
                   }, {});
-                  this.sneakers = productsGroupedByType.SNEAKER;
-                  this.headgears = productsGroupedByType.HEADGEAR;
-                  this.acessorios = productsGroupedByType.ACESSORIOS;
+                  console.log(productsGroupedByType);
+                  this.$state.sneakers = productsGroupedByType.SNEAKER;
+                  this.$state.headgears = productsGroupedByType.CAP;
+                  this.$state.accessories = productsGroupedByType.ACCESSORIES;
                 return data;
             }catch(err){
                 return []
@@ -49,21 +51,16 @@ export const defineProductsStore = defineStore('produtcs',{
                 return []
             }
         },
-        async findById(id: number){
+        async findById(searchId: number){
+            const $q = useQuasar();
             try {
-                const response = await productsService.findById(id);
-                const clonedResponse = {
-                    id: response.id,
-                    name: response.name,
-                    img: response.photo,
-                    value: response.value, 
-                }
+                const { id, name, photo, value, brand, type, color, size } = await productsService.findById(searchId)
+                const clonedResponse = { id, name, photo, value: 'R$ ' + value, brand, type, color, size}
                 this.productPage = clonedResponse;
-            
-                return response;
+                return clonedResponse;
               } catch(err: any){
                 console.error(err)
-                alert(`Um erro aconteceu ao buscar o produto: ${err.message}`)
+                $q.notify({color: 'negative', message: `Um erro aconteceu ao buscar o produto: ${err.message}`})
             }  
         },
         async createProduct(body: TCreateProduct, token: string | null ){

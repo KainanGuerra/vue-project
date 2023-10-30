@@ -23,7 +23,7 @@ import { useQuasar } from 'quasar';
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router';
 
-import { defineUserStore } from '../../../stores/user.store';
+import { defineUserStore } from '@/stores/user.store';
 const $q = useQuasar()
 const userStore = defineUserStore();
 

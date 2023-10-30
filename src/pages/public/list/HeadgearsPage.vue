@@ -3,13 +3,13 @@
       <div class="sectionProduct">
         <h2>HEADGEARS</h2> 
         <section class="listProducts">
-          <div v-for="product in headFound" :key="product.name" class="cardWrapper">
+          <div v-for="product in headFound" :key="product" class="cardWrapper">
             <card-product
               :product-info="product"
             />
           </div>
         </section> 
-        <h4 v-if="!headFound">Nenhum produto cadastrado</h4>
+        <h4 v-if="!headFound || !headFound.length">Nenhum produto cadastrado</h4>
       </div>
     </div>
 </template>
@@ -20,18 +20,15 @@ import CardProduct from '../home/components//content/CardProduct.vue';
 
 const useProductsStore = defineProductsStore();
 
-const headFound = computed<any>(()=>{
-  return useProductsStore.headgears;
-});
-
+const headFound = computed(()=> useProductsStore.headgears);
 onMounted(async () => {
-  try{
-    console.log();
-    await useProductsStore.find();
-  }catch(err){
-    console.log(err);
-    throw err;
-  }
+try{
+  console.log();
+  await useProductsStore.find();
+}catch(err){
+  console.log(err);
+  throw err;
+}
 });
 </script>
 
