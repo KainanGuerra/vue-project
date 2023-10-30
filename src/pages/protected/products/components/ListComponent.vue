@@ -2,6 +2,8 @@
   <q-table
       :rows="props.tableInfo.data"
       :columns="props.tableInfo.columns"
+      :hide-pagination="props.tableInfo.paginationHiden"
+      class="fit"
   >
   </q-table>
 </template>
@@ -11,6 +13,7 @@
 type TListProduct = {
   columns: Array<any>,
   data: Array<any>
+  paginationHiden?: boolean,
 }
 
 const props = defineProps<{tableInfo: TListProduct}>();

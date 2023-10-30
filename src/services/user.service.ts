@@ -64,5 +64,23 @@ export const userService = {
         }
         const { data } = await AxiosInstance.get('/users', payload);
         return data;
+    },
+    async getShopCar(token: string){
+        const config =  {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+        const {data} = await AxiosInstance.get('purchases/shop-car', config)
+        return data;
+    },
+    async getProducts(token: string){
+        const config =  {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+        const {data} = await AxiosInstance.get('purchases/shop-car/products', config)
+        return data;
     }
 };

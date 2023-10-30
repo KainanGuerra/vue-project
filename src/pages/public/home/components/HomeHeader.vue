@@ -51,15 +51,17 @@
 import { useQuasar } from 'quasar';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { defineUserStore } from '../../../../stores/user.store';
+import { defineUserStore } from '@/stores/user.store';
+import { defineProductsStore } from '@/stores/products.store';
 
 const $q = useQuasar();
 const router = useRouter();
-
+const productStore = defineProductsStore();
 const userStore = defineUserStore();
 const userEmail = computed(()=>userStore.user?.email)
 const input = ref('');
-const redirect = (page: string)=>{
+const redirect =async (page: string)=>{
+    await productStore.find();
     if(page === 'login'){
       if(!userEmail.value) return router.push({name: page})
       if(userStore.user?.role === 'CLIENT') return router.push({name: 'profile'})

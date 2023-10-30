@@ -40,7 +40,7 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { defineProductsStore } from '../../../../stores/products.store';
+import { defineProductsStore } from '@/stores/products.store';
 import CardProduct from './content/CardProduct.vue';
 
 const useProductsStore = defineProductsStore();

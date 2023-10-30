@@ -1,7 +1,7 @@
 import { userService } from '@/services/user.service';
 import { TUserStore } from '@/shared/types/user/state-user-store.type';
 import { defineStore } from 'pinia';
-import { LocalStorage } from 'quasar';
+import { LocalStorage, useQuasar } from 'quasar';
 import { type ICreateUserPayload } from '@/shared/interface/create-user-payload.interface';
 import { useRouter } from 'vue-router';
 import { TAddress } from '@/shared/types/user/address-definition-type'
@@ -16,6 +16,8 @@ export const defineUserStore = defineStore('user',{
         token: LocalStorage.getItem('token'),
         user: LocalStorage.getItem('user'),
         clients: [],
+        shopCar: [],
+        productsOnShopCar: [],
     }),
     getters:{
     },
@@ -40,12 +42,13 @@ export const defineUserStore = defineStore('user',{
         },
         async validateToken(token: any){
             const router = useRouter();
+            const $q = useQuasar();
             try{
                 const response = await userService.validate(token);
                 return response.data
             }catch(err:any){
                 console.error(err.response);
-                alert('Token is expired');
+                $q.notify({ color: 'negative', message: 'Token has expired'});
                 await router.push({name: 'login'});
                 this.$state.token = '';
                 this.$state.user = {};
@@ -76,6 +79,17 @@ export const defineUserStore = defineStore('user',{
         async fetchClients(){
             const response = await userService.fetchClients(this.$state.token as string);
             this.$state.clients = response;
+            return response;
+        },
+        async getShopCar(){
+            const response = await userService.getShopCar(this.$state.token as string);
+            console.log(response);
+            this.$state.shopCar = response;
+            return response
+        },
+        async getProductsFromShopCar(){
+            const response = await userService.getProducts(this.$state.token as string);
+            this.$state.productsOnShopCar = response;
             return response
         }
     }

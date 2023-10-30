@@ -146,21 +146,22 @@
                     />
                     <q-btn 
                         label="RECORTAR"
+                        class="text-weight-bold"
                         @click="crop"
                     />           
                 </section>
                 <section class="row column" v-if="croppedImage">
-                    <img style="width: 250px;" :src="croppedImage">
+                    <img style="width: 250px;height: 250px;" :src="croppedImage">
                     <q-btn 
-                        class="q-mt-md"
+                        class="q-mt-md text-weight-bold"
                         label="VOLTAR"
                         @click="croppedImage = ''"/>
                 </section>
             </section>
         </section>
             <div style="display: flex; flex-direction: column; margin-top: 20px;">
-                <q-btn color="white" @click="submit" label="CRIAR PRODUTO" />
-                <q-btn color="black" @click="redirect" label="VOLTAR" />
+                <q-btn color="white" class="text-black text-weight-bold" @click="submit" label="CRIAR PRODUTO" :disable="isLoading" />
+                <q-btn color="black" class="text-weight-bold" @click="redirect" label="VOLTAR" />
             </div>
         </q-form>
     </main>
@@ -186,7 +187,7 @@ type TProductColor = {
     value: string,
 }
 const $q = useQuasar();
-
+const isLoading = ref(false);
 const cropperComponentRef = ref<typeof Cropper | null>(null);
 const croppedImage = ref('');
 const crop = async () => {
@@ -259,6 +260,7 @@ const handleFileChange = async (event: any) =>{
 
 const submit = async()=>{
     try{
+        isLoading.value = true;
         const body: TCreateProduct = {
             name: form.value.productName,
             value: +form.value.productValue,
@@ -276,6 +278,8 @@ const submit = async()=>{
     }catch(err: any){
         console.error(err);
         $q.notify({color: 'negative', message: 'An Error Has Been Occurred', caption: err.message});
+    }finally{
+        isLoading.value = false;
     }
 }
 const router = useRouter();

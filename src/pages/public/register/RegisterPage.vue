@@ -23,11 +23,13 @@
 
 <script setup lang="ts">
 import { defineUserStore } from '@/stores/user.store';
-import type { TCreateUserBodyRequest } from '../../../shared/types/user/create-user-body.type';
+import type { TCreateUserBodyRequest } from '@/shared/types/user/create-user-body.type';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
+const $q = useQuasar();
 const state = reactive<TCreateUserBodyRequest>({
   name: 'Kainan Guerra',
   password: 'Zrp@1234',
@@ -47,10 +49,13 @@ try{
     document: state.document
   }
     await userStore.createUser(body);  
-    alert('Cadastro feito com sucesso')
+    $q.notify({ 
+      color: 'positive',
+      message:'Cadastro feito com sucesso',
+    })
     router.push({name: 'home'})
   }catch(err: any){
-    alert(`Um erro aconteceu: ${err.response.data.message}`)
+    $q.notify({color: 'negative', message: 'An Error Has Been Occurred', caption: err.message});
     console.error(err.response)
   }
 }

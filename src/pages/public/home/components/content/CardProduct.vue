@@ -19,7 +19,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { NumberFormatter } from '../../../../../shared/utils/helpers/number-functions.helper';
+import { NumberFormatter } from '@/shared/utils/helpers/number-functions.helper';
+import { defineProductsStore } from '@/stores/products.store';
 type TProductsInfoToCard = {
     productInfo?: {
         id?: number;
@@ -33,8 +34,10 @@ const props = defineProps<TProductsInfoToCard>();
 const promotionPrice = computed(()=> NumberFormatter.roundDecimal(props.productInfo?.value ? props.productInfo.value * 1.17 : 0));
 const productPriceFormatted = computed(()=> NumberFormatter.formatToDecimal(props.productInfo?.value));
 const router = useRouter();
-const redirect = (page: string, id: any)=>{    
+const redirect = async (page: string, id: any)=>{    
     try{
+        const useProductsStore = defineProductsStore();
+        await useProductsStore.findById(id)
         router.push({name: page, params: { id } })
     }catch(err){
         console.error(err)

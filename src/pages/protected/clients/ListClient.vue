@@ -27,64 +27,61 @@ import ListComponent from '../products/components/ListComponent.vue';
 const userStore = defineUserStore();
 const data = userStore.clients;
 const tableColumns = [
-      {
-        name: 'id',
-        required: true,
-        label: 'ID',
-        align: 'left',
-        field: 'id',
-        sortable: true,
-      },
-      {
-        name: 'name',
-        label: 'Name',
-        align: 'left',
-        field: 'name',
-        sortable: true,
-      },
-      {
-        name: 'createdAt',
-        label: 'Created At',
-        align: 'left',
-        field: 'createdAt',
-        sortable: true,
-      },
-      {
-        name: 'email',
-        label: 'Email',
-        align: 'left',
-        field: 'email',
-        sortable: true,
-      },
-      {
-        name: 'document',
-        label: 'Document',
-        align: 'left',
-        field: 'document',
-        sortable: true,
-      },
-      {
-        name: 'role',
-        label: 'Role',
-        align: 'left',
-        field: 'role',
-        sortable: true,
-      },
-      {
-        name: 'sales_count',
-        label: 'Sales Count',
-        align: 'left',
-        field: 'sales_count',
-        sortable: true,
-      },
-      {
-        name: 'delivery_addresses',
-        label: 'Delivery Addresses',
-        align: 'left',
-        field: 'delivery_addresses',
-        sortable: true,
-      },
-    ]
+  {
+    name: 'id',
+    required: true,
+    label: 'ID',
+    align: 'left',
+    field: 'id',
+    format: (val: any) => (val ? String(val) : ''),
+  },
+  {
+    name: 'status',
+    required: true,
+    label: 'Status',
+    align: 'left',
+    field: 'status',
+  },
+  {
+    name: 'deliveryAddress',
+    required: true,
+    label: 'Delivery Address',
+    align: 'left',
+    field: 'deliveryAddress',
+  },
+  {
+    name: 'discount',
+    required: true,
+    label: 'Discount',
+    align: 'left',
+    field: 'discount',
+    format: (val) => (val ? `${Number(val).toFixed(2)}` : ''),
+  },
+  {
+    name: 'finalValue',
+    required: true,
+    label: 'Final Value',
+    align: 'left',
+    field: 'finalValue',
+    format: (val) => (val ? `${Number(val).toFixed(2)}` : ''),
+  },
+  {
+    name: 'products',
+    required: true,
+    label: 'Products',
+    align: 'left',
+    field: 'products',
+    format: (val) => (val ? val.join(', ') : ''),
+  },
+  {
+    name: 'rawValue',
+    required: true,
+    label: 'Raw Value',
+    align: 'left',
+    field: 'rawValue',
+    format: (val) => (val ? `${Number(val).toFixed(2)}` : ''),
+  },
+];
 const router = useRouter();
 const redirect = () => router.push({name: 'navigate'});
 

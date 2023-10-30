@@ -9,7 +9,7 @@
           />
         </div>
       </section> 
-      <h4 v-if="!sneakersFound">Nenhum produto cadastrado</h4>
+      <h4 v-if="!sneakersFound || !sneakersFound.length">Nenhum produto cadastrado</h4>
     </div>
   </div>
 </template>
