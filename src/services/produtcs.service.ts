@@ -25,7 +25,6 @@ export const productsService = {
     async uploadImage(id: number, image: File, token: string | null){
         const formData = new FormData() as any;
         formData.append('file', image);
-        console.log(formData.has('file'));
         const config = {
             headers: {
               'Authorization': `Bearer ${token}`, 

@@ -11,16 +11,19 @@
         </div>
         <div class="sectionBtnBuyOrAdd row column full-width">
             <button @click="redirect('product', props.productInfo?.id)">COMPRAR</button>
-            <button @click="addToShopCar(props.productInfo?.id)">ADICIONAR AO CARRINHO</button>
+            <button :disabled="isLoading" @click="addToShopCar(props.productInfo?.id)">ADICIONAR AO CARRINHO</button>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { NumberFormatter } from '@/shared/utils/helpers/number-functions.helper';
 import { defineProductsStore } from '@/stores/products.store';
+import { defineUserStore } from '@/stores/user.store';
+import { definePurchaseStore } from '@/stores/purchase.store';
+import { useQuasar } from 'quasar';
 type TProductsInfoToCard = {
     productInfo?: {
         id?: number;
@@ -29,7 +32,10 @@ type TProductsInfoToCard = {
         photo?: string;
     }
 }
-
+const usePurchaseStore = definePurchaseStore();
+const useUserStore = defineUserStore();
+const $q = useQuasar();
+const isLoading = ref(false);
 const props = defineProps<TProductsInfoToCard>();
 const promotionPrice = computed(()=> NumberFormatter.roundDecimal(props.productInfo?.value ? props.productInfo.value * 1.17 : 0));
 const productPriceFormatted = computed(()=> NumberFormatter.formatToDecimal(props.productInfo?.value));
@@ -43,8 +49,19 @@ const redirect = async (page: string, id: any)=>{
         console.error(err)
     }
 } 
-const addToShopCar = (id:any)=>{
-    console.log(id);
+
+const addToShopCar = async (id: any) => {
+  isLoading.value = true;
+  try{
+    const token = useUserStore.token;
+    await usePurchaseStore.updateShopCar(+id, token);
+    await useUserStore.getShopCar();
+    $q.notify({color: 'positive', message: 'Product added to shop car successfully'});
+  }catch(err:any){
+    $q.notify({color: 'negative', message: 'Error while trying to add product', caption: err.message});
+  }finally{
+    isLoading.value = false;
+  }
 }
 </script>
 

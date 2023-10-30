@@ -68,12 +68,10 @@ export const defineUserStore = defineStore('user',{
         },
         async listDeliveryAddress(){
             const response = await userService.listDeliveryAddress(this.$state.token as string);
-            console.log(response);
             return response;
         },
         async addDeliveryAddress(body: TAddress){
             const response = await userService.addDeliveryAddress(body, this.$state.token as string);
-            console.log(response);
             return response;
         },
         async fetchClients(){
@@ -83,7 +81,6 @@ export const defineUserStore = defineStore('user',{
         },
         async getShopCar(){
             const response = await userService.getShopCar(this.$state.token as string);
-            console.log(response);
             this.$state.shopCar = response;
             return response
         },

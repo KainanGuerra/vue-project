@@ -26,7 +26,6 @@ export const purchasesService =  {
         return await AxiosInstance.post('purchases',payload)
     },
     async addToShopCar(id: any, token: string){
-        console.log(id, token);
         return await AxiosInstance.patch(`purchases/shop-car/${id}`, {}, {
             headers: {
                 'Authorization': `Bearer ${token}`,

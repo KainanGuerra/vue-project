@@ -19,7 +19,6 @@ export const definePurchaseStore = defineStore('purchase',{
             return data;
         },
         async updateShopCar(id: any, token: any){
-            console.log(id, token);
             const { data }= await purchasesService.addToShopCar(id, token);
             return data;
         }
