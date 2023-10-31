@@ -51,7 +51,7 @@ const headFound = computed<any>(()=>{
   return useProductsStore.headgears;
 });
 const acessFound = computed<any>(()=>{
-  return useProductsStore.acessorios;
+  return useProductsStore.accessories;
 });
 onMounted(async () => {
   try{

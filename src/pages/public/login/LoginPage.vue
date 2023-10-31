@@ -42,11 +42,9 @@ const login = async () => {
     }
     await userStore.login(payload)
     $q.notify({color: 'positive', message: 'User logged in successfully'});
-    router.push({name: 'home'})
+    return router.push({name: 'home'})
   } catch (err: any) {
-    console.error(err.message)
-    $q.notify({color: 'negative', message: 'An Error Has Been Occurred', caption: err.message});
-
+    return $q.notify({color: 'negative', message: `Erro: ${err.response.data.message}`});
   }
 }
 

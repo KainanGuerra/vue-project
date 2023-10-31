@@ -4,13 +4,13 @@ import { type TUserSignInPayload } from '@/stores/user.store';
 import { type TCreateUserBodyRequest } from '@/shared/types/user/create-user-body.type';
 import { TAddress } from '@/shared/types/user/address-definition-type'
 export const userService = {
-    async singin({email, password}: TUserSignInPayload){
+    async singIn({email, password}: TUserSignInPayload){
         const payload = {
             email,
             password,
         } 
         const response = await AxiosInstance.post('/auth', payload)
-        return response.data;
+        return response;
     },
     async validate(token: any){
         const payload = { 
@@ -57,12 +57,12 @@ export const userService = {
         return data;
     },
     async fetchClients(token: string){
-        const payload = { 
+        const config = { 
             headers: {
-                'inner-authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
             }        
         }
-        const { data } = await AxiosInstance.get('/users', payload);
+        const { data } = await AxiosInstance.get('/users', config);
         return data;
     },
     async getShopCar(token: string){
@@ -81,6 +81,24 @@ export const userService = {
             }
         }
         const {data} = await AxiosInstance.get('purchases/shop-car/products', config)
+        return data;
+    },
+    async removeItem(id: any, token: string){
+        const config =  {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+        const {data} = await AxiosInstance.patch(`purchases/remove-item/${id}`, {}, config);
+        return data;
+    },
+    async deleteClient(id: string, token: string){
+        const config =  {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+        const {data} = await AxiosInstance.delete(`users/${id}`, config );
         return data;
     }
 };

@@ -1,6 +1,8 @@
 import { AxiosInstance, AxiosUpload } from '@/shared/utils/services/axios-instance'
 import { type IFilterProductsByParams } from '@/shared/interface/filter-products-by-params.interface';
 import { type TCreateProduct } from '@/shared/types/products/create-product-type'
+
+
 export const productsService = {
     async find(){
         const response = await AxiosInstance.get('products');
@@ -35,4 +37,13 @@ export const productsService = {
         const response = await AxiosUpload.patch(`http://localhost:3000/api/v1/products/upload/${id}`, formData, config);
         return response.data;
     },
+    async deleteProduct(id: number, token: string){
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      };
+      const { data } = await AxiosInstance.delete(`products/${id}`, config)
+      return data;
+    }
 }

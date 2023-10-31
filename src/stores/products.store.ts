@@ -21,7 +21,7 @@ export const defineProductsStore = defineStore('produtcs',{
         async find(){
             try{
                 const data = await productsService.find();
-                this.allProducts = data;
+                this.$state.allProducts = data;
                 const productsGroupedByType = data.reduce((groups: any, item: any) => {
                     const { type } = item;
                   
@@ -67,6 +67,9 @@ export const defineProductsStore = defineStore('produtcs',{
         },
         async uploadImage(id: number, img: File, token: string | null){
             return await productsService.uploadImage(id, img, token);
+        },
+        async deleteProduct(id:number, token: string){
+            return await productsService.deleteProduct(id, token);
         }
     },
 })

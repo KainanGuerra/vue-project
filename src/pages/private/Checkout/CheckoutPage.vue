@@ -10,7 +10,8 @@
             :table-info="{
               data:productsOnShopCar,
               columns:tableColumns,
-              paginationHiden: true,
+              paginationHidden: true,
+              resource: 'shop-car'
             }"
           />
       </div>
@@ -34,11 +35,9 @@
   </q-layout>
 </template>
 <script setup lang="ts">
-// import { definePurchaseStore } from '@/stores/purchase.store';
 import { defineUserStore } from '@/stores/user.store';
 import ListComponent from '@/pages/protected/products/components/ListComponent.vue';
-import { computed, onBeforeMount, ref } from 'vue';
-import { definePurchaseStore } from '@/stores/purchase.store';
+import { computed, onMounted, ref } from 'vue';
 
 
 const useUserStore = defineUserStore();
@@ -93,9 +92,7 @@ const tableColumns = [
       sortable: true,
     },
 ]
-
-const usePurchaseStore = definePurchaseStore();
-onBeforeMount(()=>{
-
+onMounted(async ()=>{
+  await useUserStore.getShopCar(); 
 })
 </script>

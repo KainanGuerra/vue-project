@@ -10,6 +10,7 @@
                     :table-info="{
                         data: data,
                         columns: tableColumns,
+                        resource: 'clients'
                     }"
                 />
                 <q-btn color="black" @click="redirect" label="VOLTAR" />
@@ -21,11 +22,14 @@
 <script lang="ts" setup>
 
 import { defineUserStore } from '@/stores/user.store';
-import { onBeforeMount } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import ListComponent from '../products/components/ListComponent.vue';
+import { date } from 'quasar';
+
 const userStore = defineUserStore();
-const data = userStore.clients;
+const data = computed(()=> userStore.clients);
+
 const tableColumns = [
   {
     name: 'id',
@@ -33,58 +37,59 @@ const tableColumns = [
     label: 'ID',
     align: 'left',
     field: 'id',
-    format: (val: any) => (val ? String(val) : ''),
+    sortable: true,
   },
   {
-    name: 'status',
+    name: 'name',
     required: true,
-    label: 'Status',
+    label: 'Name',
     align: 'left',
-    field: 'status',
+    field: 'name',
+    sortable: true,
   },
   {
-    name: 'deliveryAddress',
-    required: true,
-    label: 'Delivery Address',
+    name: 'email',
+    label: 'Email',
     align: 'left',
-    field: 'deliveryAddress',
+    field: 'email',
+    sortable: true,
   },
   {
-    name: 'discount',
-    required: true,
-    label: 'Discount',
+    name: 'createdAt',
+    label: 'Created At',
     align: 'left',
-    field: 'discount',
-    format: (val) => (val ? `${Number(val).toFixed(2)}` : ''),
+    field: (row: any) => date.formatDate(
+      new Date(row.createdAt),
+      'YYYY-MM-DD HH:mm:ss'
+    ),
+    sortable: true,
   },
   {
-    name: 'finalValue',
-    required: true,
-    label: 'Final Value',
+    name: 'document',
+    label: 'Document',
     align: 'left',
-    field: 'finalValue',
-    format: (val) => (val ? `${Number(val).toFixed(2)}` : ''),
+    field: 'document',
+    sortable: true,
   },
   {
-    name: 'products',
-    required: true,
-    label: 'Products',
+    name: 'role',
+    label: 'Role',
     align: 'left',
-    field: 'products',
-    format: (val) => (val ? val.join(', ') : ''),
+    field: 'role',
+    sortable: true,
   },
   {
-    name: 'rawValue',
-    required: true,
-    label: 'Raw Value',
+    name: 'sales_count',
+    label: 'Sales Count',
     align: 'left',
-    field: 'rawValue',
-    format: (val) => (val ? `${Number(val).toFixed(2)}` : ''),
+    field: 'sales_count',
+    sortable: true,
   },
 ];
 const router = useRouter();
+
 const redirect = () => router.push({name: 'navigate'});
 
-onBeforeMount(()=> userStore.fetchClients())
+onBeforeMount(()=> userStore.fetchClients());
 
 </script>

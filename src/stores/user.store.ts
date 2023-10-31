@@ -29,16 +29,12 @@ export const defineUserStore = defineStore('user',{
             return true;
         },
         async login({email, password}: TUserSignInPayload){
-            try{
-                const response = await userService.singin({email, password});
-                this.$state.token = response.token;
-                this.$state.user = response.user;
-                LocalStorage.set('token', response.token);
-                LocalStorage.set('user', response.user);
-            }catch(err){
-                console.error(err)
-            }
-            
+                const response = await userService.singIn({email, password});
+                this.$state.token = response.data.token;
+                this.$state.user = response.data.user;
+                LocalStorage.set('token', response.data.token);
+                LocalStorage.set('user', response.data.user);
+                return response;               
         },
         async validateToken(token: any){
             const router = useRouter();
@@ -76,18 +72,25 @@ export const defineUserStore = defineStore('user',{
         },
         async fetchClients(){
             const response = await userService.fetchClients(this.$state.token as string);
-            this.$state.clients = response;
+            this.clients = response;
             return response;
         },
         async getShopCar(){
             const response = await userService.getShopCar(this.$state.token as string);
             this.$state.shopCar = response;
+            console.log(response)
             return response
         },
         async getProductsFromShopCar(){
             const response = await userService.getProducts(this.$state.token as string);
             this.$state.productsOnShopCar = response;
             return response
+        }, 
+        async deleteItem(id: any){
+            return await userService.removeItem(id, this.$state.token as string)
+        },
+        async deleteClient(id: string){
+            return await userService.deleteClient(id, this.$state.token as string);
         }
     }
 })

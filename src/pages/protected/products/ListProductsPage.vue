@@ -10,6 +10,7 @@
                 :table-info="{
                     data: products,
                     columns: tableColumns,
+                    resource: 'products'
                 }"
               />
             <q-btn 
@@ -27,6 +28,7 @@ import { defineProductsStore } from '@/stores/products.store';
 import { computed, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import ListComponent from './components/ListComponent.vue';
+import { date } from 'quasar';
 
 const productsStore = defineProductsStore();
 const router = useRouter();
@@ -52,14 +54,10 @@ const tableColumns = [
       name: 'createdAt',
       label: 'Created At',
       align: 'left',
-      field: 'createdAt',
-      sortable: true,
-    },
-    {
-      name: 'updatedAt',
-      label: 'Updated At',
-      align: 'left',
-      field: 'updatedAt',
+      field: (row: any) => date.formatDate(
+      new Date(row.createdAt),
+      'YYYY-MM-DD HH:mm:ss'
+    ),
       sortable: true,
     },
     {
@@ -110,5 +108,5 @@ const tableColumns = [
 
 const redirect = () => router.push({name: 'navigate'});
 
-onBeforeMount(()=> productsStore.find())
+onBeforeMount(()=> productsStore.find());
 </script>
